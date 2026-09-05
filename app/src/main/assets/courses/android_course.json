@@ -1,0 +1,276 @@
+{
+  "id": "android",
+  "title": "Android Development",
+  "tagline": "Modern mobile engineering with Kotlin, Jetpack Compose, and Android Studio",
+  "level": "Intermediate to Advanced",
+  "estimatedHours": 32,
+  "badge": "Android",
+  "accentColor": "#059669",
+  "description": "Build high-performance, reactive native Android apps. Master Kotlin language semantics, Jetpack Compose declarative UI, state management, Unidirectional Data Flow (UDF), ViewModels, Room database persistence, Coroutines, and modern Material 3 design systems.",
+  "chapters": [
+    {
+      "id": "and_ch1",
+      "title": "Chapter 1: Modern Kotlin Foundations for Android",
+      "description": "Kotlin syntax, null safety, data classes, sealed classes, and extension functions.",
+      "order": 1,
+      "lessons": [
+        {
+          "id": "and_l1",
+          "title": "Kotlin Syntax, val vs var & Null Safety",
+          "order": 1,
+          "readTimeMinutes": 11,
+          "summary": "Master Kotlin type inference, immutability with val, nullable types (?), safe calls (?.), and the Elvis operator (?:).",
+          "content": "### Why Google Made Kotlin the Standard\nIn 2019, Google officially made Android 'Kotlin-First'. Kotlin eliminates entire classes of runtime errors while vastly reducing boilerplate code.\n\n### 1. Immutability: 'val' vs 'var'\n- `val` (Value): Read-only reference (like `final` in Java or `const` in C++). Once assigned, it cannot be rebound.\n- `var` (Variable): Mutable reference. Can be reassigned.\n*Best Practice*: Default to `val` everywhere. Use `var` only when state mutation is strictly necessary.\n\n### 2. The Billion-Dollar Mistake Solved: Null Safety\nIn Java and C, dereferencing a null pointer throws a `NullPointerException` (the #1 cause of Android app crashes). In Kotlin, **types cannot be null by default**:\n```kotlin\nvar name: String = \"Alex\"\nname = null // COMPILE ERROR! Impossible to be null!\n\nvar nullableName: String? = null // Explicitly nullable with '?'\n```\n\n### Safe Calls & The Elvis Operator\n- Safe Call (`?.`): Returns null if the object is null, avoiding crashes: `val len = nullableName?.length`\n- Elvis Operator (`?:`): Provides a default fallback value if null:\n```kotlin\nval displayName = nullableName ?: \"Anonymous User\"\n```",
+          "code": "fun main() {\n    val appName: String = \"DevLearn Android\"\n    val developer: String? = null\n    val activeName = developer ?: \"Guest Developer\"\n    \n    println(\"Application: $appName\")\n    println(\"Active Session: $activeName\")\n    println(\"Null Safety: Fully Enforced\")\n}",
+          "expectedOutput": "Application: DevLearn Android\nActive Session: Guest Developer\nNull Safety: Fully Enforced",
+          "practice": {
+            "title": "Enforce Null Safety with Elvis Operator",
+            "instructions": "Declare a nullable String? serverStatus = null, and use ?: to fallback to 'Offline'. Print the status.",
+            "starterCode": "fun main() {\n    val serverStatus: String? = null\n    val currentStatus = serverStatus ?: \"Offline\"\n    println(\"Server Status: $currentStatus\")\n}",
+            "hint": "Use val currentStatus = serverStatus ?: \"Offline\"",
+            "solutionCode": "fun main() {\n    val serverStatus: String? = null\n    val currentStatus = serverStatus ?: \"Offline\"\n    println(\"Server Status: $currentStatus\")\n}",
+            "expectedOutput": "Server Status: Offline"
+          },
+          "quizzes": [
+            {
+              "id": "and_q1_1",
+              "question": "What is the result of attempting to assign null to a variable declared as 'val title: String' in Kotlin?",
+              "options": [
+                "The app throws a NullPointerException at runtime",
+                "The compiler refuses to compile, producing a type mismatch error",
+                "The variable silently defaults to an empty string",
+                "It converts the string to uppercase"
+              ],
+              "correctIndex": 1,
+              "explanation": "In Kotlin, types without a '?' suffix are non-nullable. The compiler catches null assignments at compile time, eliminating runtime NPEs."
+            }
+          ]
+        },
+        {
+          "id": "and_l2",
+          "title": "Data Classes, Sealed Classes & Pattern Matching",
+          "order": 2,
+          "readTimeMinutes": 12,
+          "summary": "Model UI state immutably with data classes and express exhaustive UI state with sealed classes.",
+          "content": "### Data Classes: Zero-Boilerplate Models\nIn Java, modeling a simple `User` required dozens of lines of getters, setters, `equals()`, `hashCode()`, `toString()`, and copy utilities. In Kotlin:\n```kotlin\ndata class User(val id: Int, val username: String, val isOnline: Boolean)\n```\nThe compiler automatically generates:\n- `equals()` and `hashCode()` based on all properties.\n- `toString()` formatting: `User(id=1, username=\"Alex\", isOnline=true)`.\n- `.copy()` method for immutable state cloning: `user.copy(isOnline = false)`.\n\n### Sealed Classes: Exhaustive State Representation\nA `sealed class` defines a restricted class hierarchy where all subclasses are known at compile time. This is the bedrock of Android UI State modeling:\n```kotlin\nsealed class UiState {\n    object Loading : UiState()\n    data class Success(val data: List<String>) : UiState()\n    data class Error(val message: String) : UiState()\n}\n```\nWhen used with Kotlin's `when` expression, the compiler **enforces exhaustiveness**: you don't even need an `else` branch! If a new state is added, the compiler flags every place that needs updating.",
+          "code": "fun main() {\n    val dev = \"Maya\"\n    val score = 98\n    println(\"Developer Profile: $dev\")\n    println(\"Certification Score: $score\")\n    println(\"Status: Verified Active\")\n}",
+          "expectedOutput": "Developer Profile: Maya\nCertification Score: 98\nStatus: Verified Active",
+          "practice": {
+            "title": "Format User Profile Status",
+            "instructions": "Print a formatted profile string with name 'Jordan' and role 'Mobile Engineer'.",
+            "starterCode": "fun main() {\n    val name = \"Jordan\"\n    val role = \"Mobile Engineer\"\n    println(\"User: $name | Role: $role\")\n}",
+            "hint": "Use string templates: $name and $role.",
+            "solutionCode": "fun main() {\n    val name = \"Jordan\"\n    val role = \"Mobile Engineer\"\n    println(\"User: $name | Role: $role\")\n}",
+            "expectedOutput": "User: Jordan | Role: Mobile Engineer"
+          },
+          "quizzes": [
+            {
+              "id": "and_q2_1",
+              "question": "What is the primary architectural advantage of using sealed classes for Android UI states?",
+              "options": [
+                "They increase rendering frame rates to 120fps",
+                "The compiler enforces exhaustive handling of all possible state variants in 'when' statements",
+                "They automatically compress database tables",
+                "They replace the AndroidManifest file"
+              ],
+              "correctIndex": 1,
+              "explanation": "Sealed hierarchies are closed and known to the compiler, ensuring every UI condition (Loading, Success, Error) is safely handled without missing states."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "and_ch2",
+      "title": "Chapter 2: Android Studio & Project Architecture",
+      "description": "Android app anatomy, Gradle Kotlin DSL build scripts, and Activity lifecycles.",
+      "order": 2,
+      "lessons": [
+        {
+          "id": "and_l3",
+          "title": "Android Project Structure & Gradle Build System",
+          "order": 1,
+          "readTimeMinutes": 11,
+          "summary": "Understand AndroidManifest.xml, build.gradle.kts, compileSdk, targetSdk, and modern app architecture.",
+          "content": "### Anatomy of a Modern Android App\nAn Android Studio project is structured into clear architectural domains:\n1. **`app/src/main/AndroidManifest.xml`**:\n   - The central declaration of the application.\n   - Registers all Activities, Services, Broadcast Receivers, and Content Providers.\n   - Declares device hardware requirements and system permissions (e.g., `INTERNET`).\n2. **`app/build.gradle.kts`**:\n   - Written in Kotlin DSL.\n   - Configures `compileSdk` (SDK version against which the app is compiled).\n   - Configures `minSdk` (minimum Android version required to install the app).\n   - Manages third-party library dependencies (Coil, Room, Navigation, Material 3).\n3. **`res/` (Resources)**:\n   - Contains static assets: strings (`strings.xml`), drawables (`res/drawable/`), icons (`mipmap/`), and themes.\n\n### The Application ID vs Package Namespace\n- `namespace`: Controls R class generation and Kotlin package hierarchy.\n- `applicationId`: Unique identifier for the app on Google Play and Android OS.",
+          "code": "fun main() {\n    val packageId = \"com.devlearn.android\"\n    val compileSdk = 35\n    val minSdk = 26\n    \n    println(\"Package: $packageId\")\n    println(\"Compile SDK Target: $compileSdk\")\n    println(\"Minimum SDK Requirement: $minSdk\")\n}",
+          "expectedOutput": "Package: com.devlearn.android\nCompile SDK Target: 35\nMinimum SDK Requirement: 26",
+          "practice": {
+            "title": "Display App Metadata",
+            "instructions": "Print application version code (100) and version name ('1.0.0').",
+            "starterCode": "fun main() {\n    val versionCode = 100\n    val versionName = \"1.0.0\"\n    println(\"Version: $versionName (Build $versionCode)\")\n}",
+            "hint": "Use println with string template.",
+            "solutionCode": "fun main() {\n    val versionCode = 100\n    val versionName = \"1.0.0\"\n    println(\"Version: $versionName (Build $versionCode)\")\n}",
+            "expectedOutput": "Version: 1.0.0 (Build 100)"
+          },
+          "quizzes": [
+            {
+              "id": "and_q3_1",
+              "question": "What is the purpose of 'minSdk' in build.gradle.kts?",
+              "options": [
+                "The minimum battery percentage required to run the app",
+                "The lowest Android operating system API level capable of running the application",
+                "The minimum RAM required on the host device",
+                "The target compiler optimization level"
+              ],
+              "correctIndex": 1,
+              "explanation": "minSdk specifies the oldest Android OS version that can install and run the app. Devices running earlier OS versions will be prevented from downloading it."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "and_ch3",
+      "title": "Chapter 3: Jetpack Compose: Declarative UI Architecture",
+      "description": "The declarative paradigm, Composable functions, layout primitives, and Material 3 design.",
+      "order": 3,
+      "lessons": [
+        {
+          "id": "and_l4",
+          "title": "The Jetpack Compose Declarative Paradigm",
+          "order": 1,
+          "readTimeMinutes": 13,
+          "summary": "UI as a function of state: UI = f(State). Recomposition, Composable annotations, and replacing legacy XML layouts.",
+          "content": "### Declarative vs Imperative UI\nIn legacy Android (XML Layouts), the UI was imperative: you inflated views and manually mutated their internal properties (`findViewById`, `textView.setText(\"...\")`, `button.setVisibility(View.GONE)`). This led to synchronization bugs where state and UI drifted out of sync.\n\n### The Compose Mental Model: UI = f(State)\nIn **Jetpack Compose**, UI is completely declarative:\n1. You describe **what** the UI should look like for a given state.\n2. When the state changes, Compose automatically **recomposes** (re-executes) only the specific Composable functions whose inputs changed!\n\n### The `@Composable` Annotation\nFunctions annotated with `@Composable` can only be called from other Composables. They transform application data into a UI hierarchy:\n```kotlin\n@Composable\nfun Greeting(name: String) {\n    Text(\n        text = \"Hello, $name!\",\n        style = MaterialTheme.typography.titleLarge\n    )\n}\n```\n\n### Core Layout Primitives\n- `Column`: Stacks children vertically.\n- `Row`: Places children horizontally.\n- `Box`: Overlays children on top of each other (Z-order stack).\n- `Modifier`: Chained configuration for sizing, padding, clicks, borders, and backgrounds.",
+          "code": "fun simulateComposeHierarchy() {\n    println(\"Card {\")\n    println(\"  Column {\")\n    println(\"    Text('Course: Jetpack Compose')\")\n    println(\"    Button('Start Lesson')\")\n    println(\"  }\")\n    println(\"}\")\n}\n\nfun main() {\n    simulateComposeHierarchy()\n}",
+          "expectedOutput": "Card {\n  Column {\n    Text('Course: Jetpack Compose')\n    Button('Start Lesson')\n  }\n}",
+          "practice": {
+            "title": "Simulate Compose Row Layout",
+            "instructions": "Print a simulation of a Compose Row containing an Icon and a Text label.",
+            "starterCode": "fun main() {\n    println(\"Row {\")\n    println(\"  Icon('CheckCircle')\")\n    println(\"  Text('Task Completed')\")\n    println(\"}\")\n}",
+            "hint": "Print the simulated Composable tree.",
+            "solutionCode": "fun main() {\n    println(\"Row {\")\n    println(\"  Icon('CheckCircle')\")\n    println(\"  Text('Task Completed')\")\n    println(\"}\")\n}",
+            "expectedOutput": "Row {\n  Icon('CheckCircle')\n  Text('Task Completed')\n}"
+          },
+          "quizzes": [
+            {
+              "id": "and_q4_1",
+              "question": "What happens during 'recomposition' in Jetpack Compose?",
+              "options": [
+                "The entire activity is destroyed and recreated",
+                "Compose re-executes only the composable functions whose observed state has changed",
+                "The app restarts from main()",
+                "Garbage collection is paused"
+              ],
+              "correctIndex": 1,
+              "explanation": "Recomposition is the process of re-executing Composable functions when their inputs change to update the screen efficiently without touching unaffected UI nodes."
+            }
+          ]
+        },
+        {
+          "id": "and_l5",
+          "title": "Modifiers & Layout Geometry in Compose",
+          "order": 2,
+          "readTimeMinutes": 12,
+          "summary": "Mastering Modifier ordering, padding, fillMaxWidth, click listeners, and layout constraints.",
+          "content": "### What is a Modifier?\nIn Jetpack Compose, `Modifier` is the standard mechanism to decorate or augment a Composable. Modifiers allow you to:\n- Change the composable's size, layout, behavior, and appearance.\n- Add interaction capabilities, like click, scroll, and drag listeners.\n- Add accessibility semantics.\n\n### Modifier Chaining Order Matters!\nUnlike CSS where style properties are unordered, **Modifier chain order is strictly sequential**:\n```kotlin\n// Example 1: Padding outside border\nModifier\n    .padding(16.dp)\n    .border(2.dp, Color.Blue) // Border is drawn inside padding\n\n// Example 2: Border outside padding\nModifier\n    .border(2.dp, Color.Blue)\n    .padding(16.dp) // Content is inset inside border\n```\n\n### Essential Modifiers\n- `fillMaxSize()` / `fillMaxWidth()`: Expands to match parent constraints.\n- `padding(...)`: Insets content.\n- `clickable { ... }`: Attaches touch ripples and click handlers.\n- `clip(RoundedCornerShape(8.dp))`: Clips content to a geometric boundary.",
+          "code": "fun main() {\n    val width = \"fillMaxWidth\"\n    val padding = \"16.dp\"\n    val shape = \"RoundedCorner(12.dp)\"\n    \n    println(\"Modifier Pipeline:\")\n    println(\"1. Dimension: $width\")\n    println(\"2. Inset: $padding\")\n    println(\"3. Geometry: $shape\")\n}",
+          "expectedOutput": "Modifier Pipeline:\n1. Dimension: fillMaxWidth\n2. Inset: 16.dp\n3. Geometry: RoundedCorner(12.dp)",
+          "practice": {
+            "title": "Construct Modifier Spec",
+            "instructions": "Print a 2-line Modifier spec displaying 'Modifier.fillMaxWidth()' and 'Modifier.padding(16.dp)'.",
+            "starterCode": "fun main() {\n    println(\"Modifier.fillMaxWidth()\")\n    println(\"Modifier.padding(16.dp)\")\n}",
+            "hint": "Print the two Modifier calls.",
+            "solutionCode": "fun main() {\n    println(\"Modifier.fillMaxWidth()\")\n    println(\"Modifier.padding(16.dp)\")\n}",
+            "expectedOutput": "Modifier.fillMaxWidth()\nModifier.padding(16.dp)"
+          },
+          "quizzes": [
+            {
+              "id": "and_q5_1",
+              "question": "Does the ordering of function calls chained onto a Modifier in Compose affect the rendered output?",
+              "options": [
+                "No, Compose sorts modifiers automatically",
+                "Yes, Modifier calls are applied in sequential order from top to bottom",
+                "Only when testing on emulators",
+                "Only for background color"
+              ],
+              "correctIndex": 1,
+              "explanation": "Modifier order is significant: applying padding before a background pads the component first, whereas applying it after background affects inner content."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "and_ch4",
+      "title": "Chapter 4: State Management & Unidirectional Data Flow",
+      "description": "remember, mutableStateOf, State Hoisting, ViewModel, and StateFlow.",
+      "order": 4,
+      "lessons": [
+        {
+          "id": "and_l6",
+          "title": "State in Compose: remember & State Hoisting",
+          "order": 1,
+          "readTimeMinutes": 13,
+          "summary": "Managing local UI state with remember and mutableStateOf, and making components reusable via State Hoisting.",
+          "content": "### What is State in Compose?\nState is any value that can change over time. In Compose, state drives the UI. When state changes, Compose automatically reads the new state and updates the screen.\n\n### `remember` and `mutableStateOf`\n- `mutableStateOf(value)`: Creates an observable `MutableState<T>` object that triggers recomposition when its value changes.\n- `remember { ... }`: Preserves the state across recompositions! Without `remember`, the state would reinitialize to its default value on every single recomposition frame:\n```kotlin\nvar counter by remember { mutableStateOf(0) }\nButton(onClick = { counter++ }) {\n    Text(\"Clicks: $counter\")\n}\n```\n\n### State Hoisting: The Single Source of Truth\nState hoisting is a pattern of moving state to a Composable's caller to make the Composable stateless, testable, and reusable:\n- A stateless Composable has two parameters:\n  1. `value: Type`: The state to display.\n  2. `onValueChange: (Type) -> Unit`: An event lambda notifying the parent of user intent.",
+          "code": "fun main() {\n    var count = 0\n    println(\"Initial Count: $count\")\n    count += 1\n    println(\"Post Increment: $count\")\n    println(\"State Hoisting Pattern: Verified\")\n}",
+          "expectedOutput": "Initial Count: 0\nPost Increment: 1\nState Hoisting Pattern: Verified",
+          "practice": {
+            "title": "Simulate Counter State Flow",
+            "instructions": "Simulate incrementing a counter from 10 to 15 in increments of 5, printing the state.",
+            "starterCode": "fun main() {\n    var counter = 10\n    println(\"Count: $counter\")\n    counter += 5\n    println(\"Updated Count: $counter\")\n}",
+            "hint": "Update counter with += 5 and print.",
+            "solutionCode": "fun main() {\n    var counter = 10\n    println(\"Count: $counter\")\n    counter += 5\n    println(\"Updated Count: $counter\")\n}",
+            "expectedOutput": "Count: 10\nUpdated Count: 15"
+          },
+          "quizzes": [
+            {
+              "id": "and_q6_1",
+              "question": "What would happen if 'mutableStateOf(0)' was used inside a Composable without 'remember'?",
+              "options": [
+                "The app would fail to compile",
+                "The state would reset back to 0 on every single recomposition",
+                "It causes an infinite recomposition loop",
+                "The variable becomes read-only"
+              ],
+              "correctIndex": 1,
+              "explanation": "Without remember, the Composable re-evaluates mutableStateOf(0) every time the function recomposes, wiping out any user updates."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "and_ch5",
+      "title": "Chapter 5: Local Persistence with Room Database",
+      "description": "Offline-first Android architecture, SQLite abstraction with Room, Entities, and DAOs.",
+      "order": 5,
+      "lessons": [
+        {
+          "id": "and_l7",
+          "title": "Room Local Persistence Architecture",
+          "order": 1,
+          "readTimeMinutes": 12,
+          "summary": "Understand Room's compile-time SQLite abstraction: @Entity, @Dao, and @Database with Coroutines.",
+          "content": "### Why Room for Android Persistence?\nWriting raw SQLite queries in Android was error-prone and lacked compile-time verification. Room is Google's official object-relational mapping (ORM) library in Android Jetpack:\n1. **Compile-Time SQL Verification**: Invalid table names or typos in `@Query` strings fail at compile time, NOT at user runtime!\n2. **First-Class Coroutine Support**: DAOs support `suspend` functions and Kotlin `Flow` for real-time reactive queries.\n3. **Boilerplate Elimination**: Maps database rows directly into Kotlin data classes.\n\n### The Three Room Components\n1. **`@Entity`**: Represents a table in the SQLite database. Each property corresponds to a column.\n2. **`@Dao` (Data Access Object)**: An interface declaring methods to insert, update, delete, and query data (`@Insert`, `@Query`).\n3. **`@Database`**: The main database class extending `RoomDatabase`, serving as the access point for DAOs.",
+          "code": "fun main() {\n    val tableName = \"user_progress\"\n    val primaryKey = \"lesson_id\"\n    val query = \"SELECT * FROM user_progress WHERE completed = 1\"\n    \n    println(\"Room Entity: $tableName\")\n    println(\"Primary Key: $primaryKey\")\n    println(\"DAO Query: $query\")\n}",
+          "expectedOutput": "Room Entity: user_progress\nPrimary Key: lesson_id\nDAO Query: SELECT * FROM user_progress WHERE completed = 1",
+          "practice": {
+            "title": "Simulate Room DAO Contract",
+            "instructions": "Print simulated DAO query specifications for fetching completed course modules.",
+            "starterCode": "fun main() {\n    println(\"@Query('SELECT * FROM courses WHERE is_completed = 1')\")\n    println(\"suspend fun getCompletedCourses(): List<CourseEntity>\")\n}",
+            "hint": "Print the DAO method signature.",
+            "solutionCode": "fun main() {\n    println(\"@Query('SELECT * FROM courses WHERE is_completed = 1')\")\n    println(\"suspend fun getCompletedCourses(): List<CourseEntity>\")\n}",
+            "expectedOutput": "@Query('SELECT * FROM courses WHERE is_completed = 1')\nsuspend fun getCompletedCourses(): List<CourseEntity>"
+          },
+          "quizzes": [
+            {
+              "id": "and_q7_1",
+              "question": "What is the primary advantage of Room over raw SQLite queries in Android?",
+              "options": [
+                "Room does not use SQLite",
+                "Room verifies SQL queries at compile time and eliminates manual cursor parsing",
+                "Room makes apps run without internet access only",
+                "Room is written in C++"
+              ],
+              "correctIndex": 1,
+              "explanation": "Room validates SQL queries during compilation, preventing syntax errors in queries from crashing the application at runtime."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

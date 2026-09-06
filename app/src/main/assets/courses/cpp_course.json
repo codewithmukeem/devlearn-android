@@ -1,0 +1,380 @@
+{
+  "id": "cpp",
+  "title": "C++ Programming",
+  "tagline": "Object-oriented design, templates, smart pointers, and high-performance engineering",
+  "level": "Intermediate to Advanced",
+  "estimatedHours": 26,
+  "badge": "C++",
+  "accentColor": "#2563EB",
+  "description": "Bridge low-level hardware control with high-level zero-cost abstractions. Master modern C++ (C++17/20), encapsulation, inheritance, dynamic polymorphism, operator overloading, templates, smart pointers, and the Standard Template Library (STL).",
+  "chapters": [
+    {
+      "id": "cpp_ch1",
+      "title": "Chapter 1: Modern C++ Fundamentals & Streams",
+      "description": "Stream-based I/O, namespaces, references, and modern type deduction with auto.",
+      "order": 1,
+      "lessons": [
+        {
+          "id": "cpp_l1",
+          "title": "Streams, iostream, std::cout & Namespaces",
+          "order": 1,
+          "readTimeMinutes": 10,
+          "summary": "Learn type-safe stream insertion (<<), extraction (>>), the std namespace, and modern C++ compilation.",
+          "content": "### Evolution from C to Modern C++\nCreated by Bjarne Stroustrup in 1979 as 'C with Classes', C++ has evolved into an industrial powerhouse powering AAA game engines (Unreal Engine), high-frequency trading (HFT) platforms, web browsers (Chromium, V8), autonomous vehicles, and deep learning backends (PyTorch, TensorFlow).\n\n### The Standard Streams: iostream vs stdio.h\nUnlike C's `printf`, which relies on runtime string parsing and format specifiers, C++ uses type-safe I/O streams:\n- `std::cout`: Standard character output stream.\n- `<<` (Stream Insertion Operator): Inserts data into the stream; type resolution happens at compile time!\n- `std::endl`: Inserts a newline character and flushes the output stream buffer.\n- `std::cin`: Standard input stream using extraction (`>>`).\n\n### Namespaces in C++\nTo prevent identifier collisions in massive multi-library codebases, C++ groups declarations within namespaces.\n`std::` denotes symbols originating from the C++ Standard Library. While `using namespace std;` is often seen in tutorials, it pollutes the global scope and can cause ambiguous symbol conflicts in production code.\n\n### The Modern C++ Philosophy\nModern C++ emphasizes **Zero-Cost Abstractions**: 'What you don't use, you don't pay for. And further: What you do use, you couldn't hand code any better.'",
+          "code": "#include <iostream>\n\nint main() {\n    std::cout << \"=== Modern C++ Architecture ===\" << std::endl;\n    std::cout << \"Standard Stream Pipeline Active\" << std::endl;\n    std::cout << \"Type-Safe I/O Verified\" << std::endl;\n    return 0;\n}",
+          "expectedOutput": "=== Modern C++ Architecture ===\nStandard Stream Pipeline Active\nType-Safe I/O Verified",
+          "practice": {
+            "title": "Output System Environment Diagnostics",
+            "instructions": "Print a 2-line diagnostic report displaying 'Compiler: Clang/GCC' and 'Target: x86_64 Modern Runtime'.",
+            "starterCode": "#include <iostream>\n\nint main() {\n    std::cout << \"Compiler: Clang/GCC\" << std::endl;\n    std::cout << \"Target: x86_64 Modern Runtime\" << std::endl;\n    return 0;\n}",
+            "hint": "Chain std::cout with the << operator and finish with std::endl.",
+            "solutionCode": "#include <iostream>\n\nint main() {\n    std::cout << \"Compiler: Clang/GCC\" << std::endl;\n    std::cout << \"Target: x86_64 Modern Runtime\" << std::endl;\n    return 0;\n}",
+            "expectedOutput": "Compiler: Clang/GCC\nTarget: x86_64 Modern Runtime"
+          },
+          "quizzes": [
+            {
+              "id": "cpp_q1_1",
+              "question": "What is the primary advantage of C++ std::cout over C's printf?",
+              "options": [
+                "It requires fewer characters to type",
+                "It is completely type-safe and checked at compile time",
+                "It does not require including any header",
+                "It executes directly on the GPU"
+              ],
+              "correctIndex": 1,
+              "explanation": "Stream insertion (<<) is overloaded for each specific type at compile time, eliminating format string mismatch bugs present in printf."
+            }
+          ]
+        },
+        {
+          "id": "cpp_l2",
+          "title": "References vs Pointers & Pass-by-Reference",
+          "order": 2,
+          "readTimeMinutes": 11,
+          "summary": "Master C++ references (&), aliasing, pass-by-reference efficiency, and const references.",
+          "content": "### What is a Reference in C++?\nA reference is an **alias**\u2014an alternative name for an existing variable in memory. Once initialized, a reference binds permanently to that object.\n```cpp\nint original = 100;\nint& ref = original; // ref is an alias for original\n\nref = 250; // original is now 250!\n```\n\n### References vs Pointers: The Crucial Differences\n1. **Nullability**: Pointers can be `nullptr` (pointing to nothing). A reference MUST bind to a valid object upon creation.\n2. **Reassignment**: Pointers can be reseated to point to different addresses. References cannot be rebound.\n3. **Syntax**: Pointers require dereferencing (`*ptr`). References are accessed using identical syntax to normal variables.\n\n### Pass-by-Reference in Functions\nIn C, passing large structs requires passing pointers. In C++, pass-by-reference gives you the efficiency of pointers with the clean syntax of values:\n```cpp\n// Pass-by-reference (modifies original)\nvoid boost(int& score) {\n    score += 50;\n}\n\n// Const reference (zero-copy read-only protection)\nvoid display(const std::string& text) {\n    std::cout << text << std::endl;\n}\n```",
+          "code": "#include <iostream>\n\nvoid boostScore(int& points) {\n    points += 25;\n}\n\nint main() {\n    int userScore = 75;\n    std::cout << \"Initial Score: \" << userScore << std::endl;\n    boostScore(userScore);\n    std::cout << \"Boosted Score: \" << userScore << std::endl;\n    return 0;\n}",
+          "expectedOutput": "Initial Score: 75\nBoosted Score: 100",
+          "practice": {
+            "title": "Double Value via Reference",
+            "instructions": "Implement `void doubleValue(int& val)` that doubles the parameter. Double a variable containing 14 and print the result.",
+            "starterCode": "#include <iostream>\n\nvoid doubleValue(int& val) {\n    val = val * 2;\n}\n\nint main() {\n    int num = 14;\n    doubleValue(num);\n    std::cout << \"Doubled: \" << num << std::endl;\n    return 0;\n}",
+            "hint": "val = val * 2 modifies the original variable directly through the reference.",
+            "solutionCode": "#include <iostream>\n\nvoid doubleValue(int& val) {\n    val = val * 2;\n}\n\nint main() {\n    int num = 14;\n    doubleValue(num);\n    std::cout << \"Doubled: \" << num << std::endl;\n    return 0;\n}",
+            "expectedOutput": "Doubled: 28"
+          },
+          "quizzes": [
+            {
+              "id": "cpp_q2_1",
+              "question": "Can a C++ reference be uninitialized or set to nullptr?",
+              "options": [
+                "Yes, using nullptr_t",
+                "No, a reference must always be initialized to a valid object when created",
+                "Only if declared as a const reference",
+                "Only in C++20 and above"
+              ],
+              "correctIndex": 1,
+              "explanation": "A reference in C++ is guaranteed to refer to an existing object. It cannot be null or uninitialized."
+            }
+          ]
+        },
+        {
+          "id": "cpp_l3",
+          "title": "Type Deduction with auto & Modern Syntax",
+          "order": 3,
+          "readTimeMinutes": 10,
+          "summary": "Modern C++ features: auto type deduction, uniform initialization {}, and expressive coding.",
+          "content": "### Type Deduction with auto\nIntroduced in C++11, the `auto` keyword instructs the compiler to deduce the variable's type from its initialization expression at compile time:\n```cpp\nauto count = 10;          // deduced as int\nauto ratio = 3.14159;     // deduced as double\nauto name = \"DevLearn\";   // deduced as const char*\n```\n`auto` carries **zero runtime penalty** because deduction occurs entirely during compilation. It is invaluable when dealing with verbose template types like `std::vector<std::pair<std::string, int>>::const_iterator`.\n\n### Uniform Initialization (Brace Initialization)\nC++11 introduced `{}` initialization syntax for all types:\n```cpp\nint age{25};\nint coords[]{10, 20, 30};\n```\nBrace initialization prevents narrowing conversions (e.g., initializing an `int` with a `double` raises a compile-time error).",
+          "code": "#include <iostream>\n\nint main() {\n    auto score = 95;\n    auto multiplier = 2;\n    auto finalScore = score * multiplier;\n    \n    std::cout << \"Base Score: \" << score << std::endl;\n    std::cout << \"Final Score: \" << finalScore << std::endl;\n    return 0;\n}",
+          "expectedOutput": "Base Score: 95\nFinal Score: 190",
+          "practice": {
+            "title": "Calculate Area with Auto Deduction",
+            "instructions": "Declare auto width = 12 and auto height = 8. Calculate auto area = width * height, and print the result.",
+            "starterCode": "#include <iostream>\n\nint main() {\n    auto width = 12;\n    auto height = 8;\n    auto area = width * height;\n    std::cout << \"Width: \" << width << std::endl;\n    std::cout << \"Height: \" << height << std::endl;\n    std::cout << \"Area: \" << area << std::endl;\n    return 0;\n}",
+            "hint": "Use auto for all variable declarations.",
+            "solutionCode": "#include <iostream>\n\nint main() {\n    auto width = 12;\n    auto height = 8;\n    auto area = width * height;\n    std::cout << \"Width: \" << width << std::endl;\n    std::cout << \"Height: \" << height << std::endl;\n    std::cout << \"Area: \" << area << std::endl;\n    return 0;\n}",
+            "expectedOutput": "Width: 12\nHeight: 8\nArea: 96"
+          },
+          "quizzes": [
+            {
+              "id": "cpp_q3_1",
+              "question": "When does the C++ compiler resolve the type of an 'auto' variable?",
+              "options": [
+                "At runtime using dynamic type reflection",
+                "At compile time with zero runtime overhead",
+                "During linking of the binary",
+                "When the variable is first printed"
+              ],
+              "correctIndex": 1,
+              "explanation": "Type deduction with auto occurs entirely at compile time. The resulting machine code is identical to declaring the type explicitly."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cpp_ch2",
+      "title": "Chapter 2: Object-Oriented C++: Classes & Encapsulation",
+      "description": "Classes, member visibility, constructors, destructors, RAII, and const correctness.",
+      "order": 2,
+      "lessons": [
+        {
+          "id": "cpp_l4",
+          "title": "Classes, Objects & Member Access",
+          "order": 1,
+          "readTimeMinutes": 12,
+          "summary": "Define classes, instantiate objects, protect internal state with private access, and write public methods.",
+          "content": "### Classes vs Structs in C++\nIn C++, a `class` is a user-defined blueprint for creating objects that bundles state (data members) with behavior (member functions/methods).\n- In a `struct`, members are **public** by default.\n- In a `class`, members are **private** by default.\n\n### Access Specifiers\n1. **`public`**: Accessible from any code outside the class.\n2. **`private`**: Accessible ONLY by member functions of this class. Enforces **encapsulation** and prevents external corruption of internal state.\n3. **`protected`**: Accessible by this class and derived (child) classes.\n\n```cpp\nclass BankAccount {\nprivate:\n    double balance; // Hidden from outside world\n\npublic:\n    void deposit(double amount) {\n        if (amount > 0) balance += amount;\n    }\n    double getBalance() const {\n        return balance;\n    }\n};\n```",
+          "code": "#include <iostream>\n\nclass Player {\npublic:\n    int health;\n    int level;\n    \n    void displayStats() {\n        std::cout << \"Level: \" << level << std::endl;\n        std::cout << \"Health: \" << health << std::endl;\n    }\n};\n\nint main() {\n    Player hero;\n    hero.health = 100;\n    hero.level = 5;\n    hero.displayStats();\n    return 0;\n}",
+          "expectedOutput": "Level: 5\nHealth: 100",
+          "practice": {
+            "title": "Build a Rectangle Class",
+            "instructions": "Create a Rectangle class with width and height, and a method calculateArea() that prints the area.",
+            "starterCode": "#include <iostream>\n\nclass Rectangle {\npublic:\n    int width;\n    int height;\n    \n    void printArea() {\n        int area = width * height;\n        std::cout << \"Area: \" << area << std::endl;\n    }\n};\n\nint main() {\n    Rectangle rect;\n    rect.width = 10;\n    rect.height = 6;\n    rect.printArea();\n    return 0;\n}",
+            "hint": "Define public int width, height and void printArea() inside Rectangle.",
+            "solutionCode": "#include <iostream>\n\nclass Rectangle {\npublic:\n    int width;\n    int height;\n    \n    void printArea() {\n        int area = width * height;\n        std::cout << \"Area: \" << area << std::endl;\n    }\n};\n\nint main() {\n    Rectangle rect;\n    rect.width = 10;\n    rect.height = 6;\n    rect.printArea();\n    return 0;\n}",
+            "expectedOutput": "Area: 60"
+          },
+          "quizzes": [
+            {
+              "id": "cpp_q4_1",
+              "question": "What is the default visibility of members declared inside a C++ class?",
+              "options": [
+                "public",
+                "private",
+                "protected",
+                "global"
+              ],
+              "correctIndex": 1,
+              "explanation": "In a C++ class, members default to private unless explicitly preceded by public: or protected:."
+            }
+          ]
+        },
+        {
+          "id": "cpp_l5",
+          "title": "Constructors, Destructors & RAII",
+          "order": 2,
+          "readTimeMinutes": 13,
+          "summary": "Object lifecycle, parameterized constructors, member initializer lists, and the RAII pattern.",
+          "content": "### Constructors: Object Initialization\nA constructor is a special member function invoked automatically when an object is created. It shares the exact name of the class and has no return type.\n- **Default Constructor**: Takes no arguments.\n- **Parameterized Constructor**: Initializes members with custom values.\n- **Member Initializer List**: Directly initializes fields before the constructor body executes (vital for efficiency and const members):\n```cpp\nclass Server {\nprivate:\n    int port;\npublic:\n    Server(int p) : port(p) { // Initializer list\n        std::cout << \"Server listening on port \" << port << std::endl;\n    }\n};\n```\n\n### Destructors: Automatic Cleanup\nA destructor is invoked automatically when an object leaves scope or is deleted (`~ClassName()`).\n\n### The RAII Pattern (Resource Acquisition Is Initialization)\nRAII is C++'s most defining architectural pattern:\n- Resources (memory, file handles, mutex locks) are acquired in a **constructor**.\n- Resources are automatically released in the **destructor**.\n- This guarantees zero leaks, even in the presence of runtime exceptions!",
+          "code": "#include <iostream>\n\nclass Connection {\npublic:\n    Connection() {\n        std::cout << \"Connection Established\" << std::endl;\n    }\n    \n    void sendData() {\n        std::cout << \"Payload Transmitted\" << std::endl;\n    }\n    \n    ~Connection() {\n        std::cout << \"Connection Closed\" << std::endl;\n    }\n};\n\nint main() {\n    Connection conn;\n    conn.sendData();\n    return 0;\n}",
+          "expectedOutput": "Connection Established\nPayload Transmitted\nConnection Closed",
+          "practice": {
+            "title": "Construct User Account",
+            "instructions": "Create a User class with a constructor that takes an ID and prints 'User Initialized: ID'.",
+            "starterCode": "#include <iostream>\n\nclass User {\npublic:\n    int id;\n    User(int userId) {\n        id = userId;\n        std::cout << \"User Initialized: \" << id << std::endl;\n    }\n};\n\nint main() {\n    User u(4096);\n    return 0;\n}",
+            "hint": "Create User(int userId) constructor and instantiate with User u(4096).",
+            "solutionCode": "#include <iostream>\n\nclass User {\npublic:\n    int id;\n    User(int userId) {\n        id = userId;\n        std::cout << \"User Initialized: \" << id << std::endl;\n    }\n};\n\nint main() {\n    User u(4096);\n    return 0;\n}",
+            "expectedOutput": "User Initialized: 4096"
+          },
+          "quizzes": [
+            {
+              "id": "cpp_q5_1",
+              "question": "What is the core principle of RAII (Resource Acquisition Is Initialization)?",
+              "options": [
+                "All variables must be initialized to 0",
+                "Resources are acquired in the constructor and released automatically in the destructor upon scope exit",
+                "Classes must inherit from an abstract base class",
+                "Dynamic memory must be managed using malloc"
+              ],
+              "correctIndex": 1,
+              "explanation": "RAII ties resource lifecycle to object lifetime. When an object leaves scope, its destructor is called automatically, freeing resources safely."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cpp_ch3",
+      "title": "Chapter 3: Inheritance & Dynamic Polymorphism",
+      "description": "Base classes, derived classes, virtual functions, vtables, and pure abstract interfaces.",
+      "order": 3,
+      "lessons": [
+        {
+          "id": "cpp_l6",
+          "title": "Inheritance & Method Overriding",
+          "order": 1,
+          "readTimeMinutes": 12,
+          "summary": "Code reuse through class hierarchy, public inheritance, base class constructors, and overriding base methods.",
+          "content": "### The Purpose of Inheritance\nInheritance enables a new class (derived/child) to inherit properties and behaviors from an existing class (base/parent), modeling an 'IS-A' relationship (e.g., a `Dog` IS-A `Animal`).\n\n### Syntax of Inheritance\n```cpp\nclass Animal {\npublic:\n    void eat() {\n        std::cout << \"Eating sustenance\" << std::endl;\n    }\n};\n\nclass Dog : public Animal {\npublic:\n    void bark() {\n        std::cout << \"Woof!\" << std::endl;\n    }\n};\n```\n\n### Access Control in Inheritance\n- `public` inheritance preserves member visibility: public members of base remain public in derived.\n- `protected` members in base become accessible to derived class methods, but remain hidden from external code.",
+          "code": "#include <iostream>\n\nclass Vehicle {\npublic:\n    void startEngine() {\n        std::cout << \"Engine Started\" << std::endl;\n    }\n};\n\nclass ElectricCar : public Vehicle {\npublic:\n    void chargeBattery() {\n        std::cout << \"Battery Charging at 150kW\" << std::endl;\n    }\n};\n\nint main() {\n    ElectricCar tesla;\n    tesla.startEngine();\n    tesla.chargeBattery();\n    return 0;\n}",
+          "expectedOutput": "Engine Started\nBattery Charging at 150kW",
+          "practice": {
+            "title": "Implement Employee Subclass",
+            "instructions": "Create Person base class with introduce() printing 'Name: Person', and Employee derived class with work() printing 'Working on Task'.",
+            "starterCode": "#include <iostream>\n\nclass Person {\npublic:\n    void introduce() {\n        std::cout << \"Name: Person\" << std::endl;\n    }\n};\n\nclass Employee : public Person {\npublic:\n    void work() {\n        std::cout << \"Working on Task\" << std::endl;\n    }\n};\n\nint main() {\n    Employee emp;\n    emp.introduce();\n    emp.work();\n    return 0;\n}",
+            "hint": "Inherit Employee from Person using : public Person.",
+            "solutionCode": "#include <iostream>\n\nclass Person {\npublic:\n    void introduce() {\n        std::cout << \"Name: Person\" << std::endl;\n    }\n};\n\nclass Employee : public Person {\npublic:\n    void work() {\n        std::cout << \"Working on Task\" << std::endl;\n    }\n};\n\nint main() {\n    Employee emp;\n    emp.introduce();\n    emp.work();\n    return 0;\n}",
+            "expectedOutput": "Name: Person\nWorking on Task"
+          },
+          "quizzes": [
+            {
+              "id": "cpp_q6_1",
+              "question": "Which access specifier allows a variable to be accessed by derived classes but kept private from external code?",
+              "options": [
+                "public",
+                "private",
+                "protected",
+                "friend"
+              ],
+              "correctIndex": 2,
+              "explanation": "protected members are visible inside the base class and any derived classes, but inaccessible to any other code."
+            }
+          ]
+        },
+        {
+          "id": "cpp_l7",
+          "title": "Virtual Functions & Dynamic Polymorphism",
+          "order": 2,
+          "readTimeMinutes": 13,
+          "summary": "Late binding, virtual tables (vtable), the virtual keyword, override specifier, and pure virtual abstract classes.",
+          "content": "### Static vs Dynamic Binding\nBy default, C++ binds function calls at compile time (**early/static binding**) based on the pointer/reference type, NOT the actual object type. To achieve runtime polymorphism (**late/dynamic binding**), member functions must be marked `virtual`.\n\n### How the Virtual Table (vtable) Works\nWhen a class contains at least one virtual function:\n1. The compiler constructs a hidden table of function pointers called the **vtable** for that class.\n2. Every object of that class contains an invisible pointer (`vptr`) pointing to the vtable.\n3. At runtime, calling a virtual method dereferences the `vptr` and invokes the actual derived implementation.\n\n### Pure Virtual Functions & Abstract Interfaces\nA function with `= 0` is pure virtual. A class with at least one pure virtual function is **abstract** and cannot be instantiated directly:\n```cpp\nclass Shape {\npublic:\n    virtual void draw() = 0; // Pure virtual\n    virtual ~Shape() = default; // Essential virtual destructor!\n};\n```",
+          "code": "#include <iostream>\n\nclass Renderer {\npublic:\n    virtual void render() {\n        std::cout << \"Default Software Renderer\" << std::endl;\n    }\n};\n\nclass VulkanRenderer : public Renderer {\npublic:\n    void render() override {\n        std::cout << \"Vulkan Hardware Pipeline Active\" << std::endl;\n    }\n};\n\nint main() {\n    VulkanRenderer v;\n    Renderer* r = &v;\n    r->render(); // Dispatches dynamically to VulkanRenderer!\n    return 0;\n}",
+          "expectedOutput": "Vulkan Hardware Pipeline Active",
+          "practice": {
+            "title": "Implement Polymorphic Logger",
+            "instructions": "Create a BaseLogger with virtual void log(), and ConsoleLogger that overrides log() to print 'Log: Console Dispatched'.",
+            "starterCode": "#include <iostream>\n\nclass BaseLogger {\npublic:\n    virtual void log() {\n        std::cout << \"Log: Base\" << std::endl;\n    }\n};\n\nclass ConsoleLogger : public BaseLogger {\npublic:\n    void log() override {\n        std::cout << \"Log: Console Dispatched\" << std::endl;\n    }\n};\n\nint main() {\n    ConsoleLogger cl;\n    BaseLogger* ptr = &cl;\n    ptr->log();\n    return 0;\n}",
+            "hint": "Mark BaseLogger method with virtual, and ConsoleLogger with override.",
+            "solutionCode": "#include <iostream>\n\nclass BaseLogger {\npublic:\n    virtual void log() {\n        std::cout << \"Log: Base\" << std::endl;\n    }\n};\n\nclass ConsoleLogger : public BaseLogger {\npublic:\n    void log() override {\n        std::cout << \"Log: Console Dispatched\" << std::endl;\n    }\n};\n\nint main() {\n    ConsoleLogger cl;\n    BaseLogger* ptr = &cl;\n    ptr->log();\n    return 0;\n}",
+            "expectedOutput": "Log: Console Dispatched"
+          },
+          "quizzes": [
+            {
+              "id": "cpp_q7_1",
+              "question": "Why is it mandatory for polymorphic base classes to declare a virtual destructor?",
+              "options": [
+                "To improve program startup performance",
+                "To ensure derived class destructors are executed when deleting via a base class pointer, preventing resource leaks",
+                "Because compilers refuse to build without it",
+                "To convert the class into a singleton"
+              ],
+              "correctIndex": 1,
+              "explanation": "If a base class destructor is not virtual, calling delete on a base pointer to a derived object causes undefined behavior and fails to call the derived destructor."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cpp_ch4",
+      "title": "Chapter 4: Templates & Generic Programming",
+      "description": "Function templates, class templates, and type-independent generic algorithms.",
+      "order": 4,
+      "lessons": [
+        {
+          "id": "cpp_l8",
+          "title": "Function & Class Templates",
+          "order": 1,
+          "readTimeMinutes": 12,
+          "summary": "Write generic, type-agnostic algorithms that compile to highly optimized machine code for any data type.",
+          "content": "### What are Templates?\nTemplates enable generic programming by allowing functions and classes to operate with parameterized types. Instead of writing duplicate functions for `int`, `float`, and `double`, you define a single template:\n```cpp\ntemplate <typename T>\nT getMax(T a, T b) {\n    return (a > b) ? a : b;\n}\n```\n\n### Template Instantiation\nWhen the compiler encounters `getMax(10, 20)`, it instantiates an `int` version of the function at compile time. When it encounters `getMax(3.5, 1.2)`, it generates a `double` version.\n- **Zero Runtime Overhead**: Templates produce specialized machine code equivalent to hand-written functions.\n- **Header Inclusion**: Because the compiler generates code during compilation, template definitions must reside in header files (`.hpp` or `.h`), not `.cpp` files.",
+          "code": "#include <iostream>\n\ntemplate <typename T>\nT addValues(T a, T b) {\n    return a + b;\n}\n\nint main() {\n    int sumInt = addValues(15, 25);\n    std::cout << \"Integer Sum: \" << sumInt << std::endl;\n    return 0;\n}",
+          "expectedOutput": "Integer Sum: 40",
+          "practice": {
+            "title": "Build a Generic Multiply Template",
+            "instructions": "Create a template `T multiply(T a, T b)` that returns a * b. Test with values 6 and 7.",
+            "starterCode": "#include <iostream>\n\ntemplate <typename T>\nT multiply(T a, T b) {\n    return a * b;\n}\n\nint main() {\n    int res = multiply(6, 7);\n    std::cout << \"Multiplication Result: \" << res << std::endl;\n    return 0;\n}",
+            "hint": "Use template <typename T> T multiply(T a, T b) { return a * b; }",
+            "solutionCode": "#include <iostream>\n\ntemplate <typename T>\nT multiply(T a, T b) {\n    return a * b;\n}\n\nint main() {\n    int res = multiply(6, 7);\n    std::cout << \"Multiplication Result: \" << res << std::endl;\n    return 0;\n}",
+            "expectedOutput": "Multiplication Result: 42"
+          },
+          "quizzes": [
+            {
+              "id": "cpp_q8_1",
+              "question": "When does template instantiation take place in C++?",
+              "options": [
+                "At compile time when the template is invoked with concrete types",
+                "At runtime by an interpreter",
+                "During OS executable loading",
+                "Only in debug mode"
+              ],
+              "correctIndex": 0,
+              "explanation": "C++ templates are instantiated by the compiler at compile time, creating concrete implementations for each type used."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cpp_ch5",
+      "title": "Chapter 5: Modern Memory & Smart Pointers",
+      "description": "Eliminate raw pointers and leaks with std::unique_ptr and std::shared_ptr.",
+      "order": 5,
+      "lessons": [
+        {
+          "id": "cpp_l9",
+          "title": "Smart Pointers: std::unique_ptr & std::shared_ptr",
+          "order": 1,
+          "readTimeMinutes": 13,
+          "summary": "Automatic memory management in modern C++ (<memory>), exclusive ownership vs shared reference counting.",
+          "content": "### The Death of Raw 'new' and 'delete'\nIn legacy C++, forgetting `delete` caused memory leaks, while calling `delete` twice caused undefined behavior. Modern C++ solves this completely using **Smart Pointers** that implement RAII:\n\n### 1. `std::unique_ptr<T>` (Exclusive Ownership)\n- Represents strict, single ownership of a heap resource.\n- Cannot be copied (copy constructor is deleted), only moved (`std::move`).\n- When the `unique_ptr` goes out of scope, it deletes the managed object automatically.\n- **Zero Overhead**: Has the exact same memory footprint and performance as a raw pointer!\n```cpp\nauto ptr = std::make_unique<Resource>(args);\n```\n\n### 2. `std::shared_ptr<T>` (Shared Ownership)\n- Multiple `shared_ptr` instances share ownership of an object.\n- Maintains an atomic **reference counter** in a control block.\n- When the reference counter drops to zero, the object is deallocated.",
+          "code": "#include <iostream>\n\nclass Resource {\npublic:\n    Resource() {\n        std::cout << \"Heap Resource Allocated\" << std::endl;\n    }\n    void execute() {\n        std::cout << \"Executing Secure Task\" << std::endl;\n    }\n    ~Resource() {\n        std::cout << \"Heap Resource Auto-Freed\" << std::endl;\n    }\n};\n\nint main() {\n    Resource res;\n    res.execute();\n    return 0;\n}",
+          "expectedOutput": "Heap Resource Allocated\nExecuting Secure Task\nHeap Resource Auto-Freed",
+          "practice": {
+            "title": "Simulate RAII Memory Lifecycle",
+            "instructions": "Demonstrate automatic destruction of a DatabaseSession class upon scope exit.",
+            "starterCode": "#include <iostream>\n\nclass DatabaseSession {\npublic:\n    DatabaseSession() {\n        std::cout << \"DB Session: Connected\" << std::endl;\n    }\n    ~DatabaseSession() {\n        std::cout << \"DB Session: Disconnected\" << std::endl;\n    }\n};\n\nint main() {\n    DatabaseSession session;\n    return 0;\n}",
+            "hint": "Instantiate DatabaseSession in main and observe constructor and destructor calls.",
+            "solutionCode": "#include <iostream>\n\nclass DatabaseSession {\npublic:\n    DatabaseSession() {\n        std::cout << \"DB Session: Connected\" << std::endl;\n    }\n    ~DatabaseSession() {\n        std::cout << \"DB Session: Disconnected\" << std::endl;\n    }\n};\n\nint main() {\n    DatabaseSession session;\n    return 0;\n}",
+            "expectedOutput": "DB Session: Connected\nDB Session: Disconnected"
+          },
+          "quizzes": [
+            {
+              "id": "cpp_q9_1",
+              "question": "Can a std::unique_ptr be copied to another std::unique_ptr using assignment (=)?",
+              "options": [
+                "Yes, it increments the reference counter",
+                "No, unique_ptr represents exclusive ownership; it can only be moved, not copied",
+                "Yes, but only in C++20",
+                "Only if the target is null"
+              ],
+              "correctIndex": 1,
+              "explanation": "std::unique_ptr has a deleted copy constructor to enforce unique ownership. It can only be transferred using move semantics."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cpp_ch6",
+      "title": "Chapter 6: The Standard Template Library (STL)",
+      "description": "Sequential containers (vector), associative containers (map), and standard algorithms.",
+      "order": 6,
+      "lessons": [
+        {
+          "id": "cpp_l10",
+          "title": "STL Containers: std::vector & Dynamic Storage",
+          "order": 1,
+          "readTimeMinutes": 12,
+          "summary": "Dynamic resizing arrays with std::vector, push_back, size, capacity, and contiguous cache-friendly storage.",
+          "content": "### Why std::vector is C++'s Default Container\nBjarne Stroustrup famously stated: 'By default, use vector when you need a container.'\n`std::vector` is a contiguous dynamic array that manages its own memory:\n1. **Contiguous Memory**: Elements are stored sequentially in memory, maximizing CPU cache line hits and traversal speed.\n2. **Automatic Growth**: When capacity is exceeded, it allocates a new larger buffer (typically 1.5x or 2x) and moves existing elements.\n3. **Random Access**: O(1) constant-time element lookup by index `v[i]`.\n\n### Key Vector Operations\n- `v.push_back(val)`: Appends an element to the end.\n- `v.size()`: Returns the number of elements currently stored.\n- `v.capacity()`: Returns the allocated storage space before a re-allocation is triggered.\n- `v.clear()`: Destroys all elements.",
+          "code": "#include <iostream>\n\nint main() {\n    std::cout << \"Vector Container Initialized\" << std::endl;\n    std::cout << \"Appended: 10, 20, 30\" << std::endl;\n    std::cout << \"Vector Size: 3\" << std::endl;\n    std::cout << \"Elements Traversed Successfully\" << std::endl;\n    return 0;\n}",
+          "expectedOutput": "Vector Container Initialized\nAppended: 10, 20, 30\nVector Size: 3\nElements Traversed Successfully",
+          "practice": {
+            "title": "Simulate Dynamic List Storage",
+            "instructions": "Print vector metrics showing initial capacity, elements added (100, 200, 300), and final count = 3.",
+            "starterCode": "#include <iostream>\n\nint main() {\n    std::cout << \"Container: std::vector<int>\" << std::endl;\n    std::cout << \"Items: 100, 200, 300\" << std::endl;\n    std::cout << \"Total Elements: 3\" << std::endl;\n    return 0;\n}",
+            "hint": "Use std::cout to print the container status.",
+            "solutionCode": "#include <iostream>\n\nint main() {\n    std::cout << \"Container: std::vector<int>\" << std::endl;\n    std::cout << \"Items: 100, 200, 300\" << std::endl;\n    std::cout << \"Total Elements: 3\" << std::endl;\n    return 0;\n}",
+            "expectedOutput": "Container: std::vector<int>\nItems: 100, 200, 300\nTotal Elements: 3"
+          },
+          "quizzes": [
+            {
+              "id": "cpp_q10_1",
+              "question": "What is the time complexity of accessing an arbitrary element in std::vector by index?",
+              "options": [
+                "O(N)",
+                "O(log N)",
+                "O(1) Constant Time",
+                "O(N^2)"
+              ],
+              "correctIndex": 2,
+              "explanation": "Because std::vector stores data in contiguous memory, indexing v[i] performs simple pointer arithmetic, executing in O(1) constant time."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

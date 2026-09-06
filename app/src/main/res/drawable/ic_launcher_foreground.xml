@@ -1,0 +1,46 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Clean rounded code badge centered in 66dp area -->
+    <path
+        android:fillColor="#1E293B"
+        android:strokeColor="#3B82F6"
+        android:strokeWidth="2.5"
+        android:pathData="M34,28 h40 a8,8 0 0 1 8,8 v36 a8,8 0 0 1 -8,8 h-40 a8,8 0 0 1 -8,-8 v-36 a8,8 0 0 1 8,-8 z" />
+    
+    <!-- Code Bracket: < -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#60A5FA"
+        android:strokeWidth="3.2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M44,46 L38,54 L44,62" />
+        
+    <!-- Code Slash: / -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#93C5FD"
+        android:strokeWidth="3.0"
+        android:strokeLineCap="round"
+        android:pathData="M51,64 L57,44" />
+
+    <!-- Code Bracket: > -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#38BDF8"
+        android:strokeWidth="3.2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M64,46 L70,54 L64,62" />
+
+    <!-- Accent dots -->
+    <path
+        android:fillColor="#38BDF8"
+        android:pathData="M34,36 a2.5,2.5 0 1 0 0.01,0 Z" />
+    <path
+        android:fillColor="#60A5FA"
+        android:pathData="M41,36 a2.5,2.5 0 1 0 0.01,0 Z" />
+</vector>

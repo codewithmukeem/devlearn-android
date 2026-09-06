@@ -1,0 +1,308 @@
+{
+  "id": "java",
+  "title": "Java Programming",
+  "tagline": "Enterprise-grade object-oriented programming, JVM architecture, and modern Java design",
+  "level": "Beginner to Advanced",
+  "estimatedHours": 28,
+  "badge": "Java",
+  "accentColor": "#EA580C",
+  "description": "Master enterprise Java. Understand JVM internals, byte-code execution, Garbage Collection, object-oriented design patterns, inheritance, polymorphism, interfaces, exception handling, and the Java Collections Framework.",
+  "chapters": [
+    {
+      "id": "java_ch1",
+      "title": "Chapter 1: Java Platform & JVM Architecture",
+      "description": "The JVM, bytecode, class structure, primitive types, and String immutability.",
+      "order": 1,
+      "lessons": [
+        {
+          "id": "java_l1",
+          "title": "JVM, Bytecode & Program Structure",
+          "order": 1,
+          "readTimeMinutes": 10,
+          "summary": "Understand how the JVM executes platform-neutral bytecode, JIT compilation, and the anatomy of public static void main.",
+          "content": "### The JVM Philosophy: Write Once, Run Anywhere (WORA)\nCreated by James Gosling at Sun Microsystems in 1995, Java solved cross-platform software distribution. Instead of compiling directly to CPU-dependent machine instructions (like C/C++), Java source code (`.java`) is compiled by `javac` into platform-neutral **bytecode** (`.class` files).\n\n### The Three Pillars of Java\n1. **JDK (Java Development Kit)**: Contains the compiler (`javac`), archiver (`jar`), debugger, and developer tools.\n2. **JRE (Java Runtime Environment)**: Provides standard libraries and classes needed to run programs.\n3. **JVM (Java Virtual Machine)**: The execution engine that executes bytecode on host hardware using an interpreter combined with a high-performance **Just-In-Time (JIT) compiler**.\n\n### Anatomy of a Java Application\nIn Java, **everything** lives inside a class:\n```java\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, Java!\");\n    }\n}\n```\n- `public`: Accessible by the JVM runtime from outside the package.\n- `static`: Can be invoked without creating an instance of the class.\n- `void`: Returns no value.\n- `main`: The designated entry point method recognized by the JVM.\n- `String[] args`: Accepts command-line arguments passed to the application.",
+          "code": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== JVM Runtime Initialized ===\");\n        System.out.println(\"Execution Engine: Active\");\n        System.out.println(\"Platform Independence: Enabled\");\n    }\n}",
+          "expectedOutput": "=== JVM Runtime Initialized ===\nExecution Engine: Active\nPlatform Independence: Enabled",
+          "practice": {
+            "title": "Print System Status Report",
+            "instructions": "Print a 2-line report displaying 'Service: Authentication' and 'Status: Online'.",
+            "starterCode": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Service: Authentication\");\n        System.out.println(\"Status: Online\");\n    }\n}",
+            "hint": "Use System.out.println() for each line.",
+            "solutionCode": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Service: Authentication\");\n        System.out.println(\"Status: Online\");\n    }\n}",
+            "expectedOutput": "Service: Authentication\nStatus: Online"
+          },
+          "quizzes": [
+            {
+              "id": "java_q1_1",
+              "question": "What is the primary role of the Java Virtual Machine (JVM)?",
+              "options": [
+                "To edit source code files",
+                "To interpret and JIT-compile bytecode into host native machine instructions",
+                "To provide hardware network drivers",
+                "To manage git repositories"
+              ],
+              "correctIndex": 1,
+              "explanation": "The JVM loads .class bytecode files and executes them on the host operating system, using JIT compilation for maximum performance."
+            }
+          ]
+        },
+        {
+          "id": "java_l2",
+          "title": "Primitive Data Types, Literals & Type Casting",
+          "order": 2,
+          "readTimeMinutes": 11,
+          "summary": "The 8 primitive types in Java, byte representations, overflow, and implicit widening vs explicit narrowing casting.",
+          "content": "### The 8 Primitives in Java\nJava separates types into **primitives** (stored directly on the stack) and **reference types** (objects stored on the heap). The 8 primitives are strictly defined across all platforms:\n- Whole numbers:\n  - `byte`: 8 bits (-128 to 127)\n  - `short`: 16 bits (-32,768 to 32,767)\n  - `int`: 32 bits (-2.14B to 2.14B) - Default for integers!\n  - `long`: 64 bits (requires `L` suffix: `10000000000L`)\n- Decimals:\n  - `float`: 32 bits (requires `f` suffix: `3.14f`)\n  - `double`: 64 bits - Default for floating-point numbers!\n- Character:\n  - `char`: 16 bits (stores UTF-16 Unicode character, e.g. `'A'`)\n- Boolean:\n  - `boolean`: `true` or `false` (Java strictly prohibits numbers as booleans!)\n\n### Type Casting\n- **Widening (Implicit)**: Smaller type into larger type (e.g. `int` to `double`). Safe, zero data loss.\n- **Narrowing (Explicit)**: Larger type into smaller type. Requires manual cast `(int)3.99`, truncating the decimal part.",
+          "code": "public class Main {\n    public static void main(String[] args) {\n        int employeeId = 5040;\n        double baseSalary = 75000.50;\n        boolean isActive = true;\n        \n        System.out.println(\"Employee ID: \" + employeeId);\n        System.out.println(\"Base Salary: \" + baseSalary);\n        System.out.println(\"Active Status: \" + isActive);\n    }\n}",
+          "expectedOutput": "Employee ID: 5040\nBase Salary: 75000.5\nActive Status: true",
+          "practice": {
+            "title": "Calculate Total Bill with Tax",
+            "instructions": "Declare int subtotal = 120 and double tax = 12.50. Compute and print total.",
+            "starterCode": "public class Main {\n    public static void main(String[] args) {\n        int subtotal = 120;\n        double tax = 12.50;\n        double total = subtotal + tax;\n        System.out.println(\"Subtotal: \" + subtotal);\n        System.out.println(\"Total with Tax: \" + total);\n    }\n}",
+            "hint": "Use double total = subtotal + tax and print.",
+            "solutionCode": "public class Main {\n    public static void main(String[] args) {\n        int subtotal = 120;\n        double tax = 12.50;\n        double total = subtotal + tax;\n        System.out.println(\"Subtotal: \" + subtotal);\n        System.out.println(\"Total with Tax: \" + total);\n    }\n}",
+            "expectedOutput": "Subtotal: 120\nTotal with Tax: 132.5"
+          },
+          "quizzes": [
+            {
+              "id": "java_q2_1",
+              "question": "Can an integer value (like 1 or 0) be used directly inside an 'if' statement condition in Java?",
+              "options": [
+                "Yes, exactly like C",
+                "No, Java strictly requires an expression that evaluates to boolean true or false",
+                "Only if wrapped in parentheses",
+                "Only in static methods"
+              ],
+              "correctIndex": 1,
+              "explanation": "Java is strongly typed and does not treat non-zero integers as true. Conditions MUST evaluate to boolean."
+            }
+          ]
+        },
+        {
+          "id": "java_l3",
+          "title": "Strings, The String Pool & Immutability",
+          "order": 3,
+          "readTimeMinutes": 12,
+          "summary": "String immutability, the JVM String Constant Pool, the == operator vs equals(), and StringBuilder.",
+          "content": "### String is an Object, Not a Primitive\nIn Java, `String` is a full class (`java.lang.String`).\n\n### The Immutability Principle\nOnce a `String` object is created in Java, its character contents **can never be changed**. \n```java\nString s = \"Hello\";\ns = s + \" World\"; // Does NOT modify \"Hello\"! Creates an entirely NEW String in memory!\n```\n\n### The String Constant Pool\nTo conserve memory, the JVM maintains a special cache in the heap called the **String Pool**.\nWhen you declare string literals:\n```java\nString a = \"Java\";\nString b = \"Java\";\n// Both 'a' and 'b' point to the EXACT SAME memory address in the pool!\n```\n\n### The Cardinal Trap: '==' vs '.equals()'\n- `==` compares **memory references** (addresses).\n- `.equals()` compares **actual character content**.\n**Always use `.equals()` to compare strings in Java!**\n\n### StringBuilder\nWhen concatenating strings inside loops, repeated concatenation creates thousands of garbage objects. Use `StringBuilder` for mutable string construction.",
+          "code": "public class Main {\n    public static void main(String[] args) {\n        String greeting = \"DevLearn\";\n        String platform = \" Platform\";\n        String fullMessage = greeting + platform;\n        \n        System.out.println(\"Message: \" + fullMessage);\n        System.out.println(\"Length: \" + fullMessage.length());\n        System.out.println(\"Match: \" + greeting.equals(\"DevLearn\"));\n    }\n}",
+          "expectedOutput": "Message: DevLearn Platform\nLength: 17\nMatch: true",
+          "practice": {
+            "title": "Verify String Content",
+            "instructions": "Declare String tier = 'Premium' and print whether tier.equals('Premium').",
+            "starterCode": "public class Main {\n    public static void main(String[] args) {\n        String tier = \"Premium\";\n        boolean isMatch = tier.equals(\"Premium\");\n        System.out.println(\"Access Tier: \" + tier);\n        System.out.println(\"Verified: \" + isMatch);\n    }\n}",
+            "hint": "Use tier.equals(\"Premium\") to compare content.",
+            "solutionCode": "public class Main {\n    public static void main(String[] args) {\n        String tier = \"Premium\";\n        boolean isMatch = tier.equals(\"Premium\");\n        System.out.println(\"Access Tier: \" + tier);\n        System.out.println(\"Verified: \" + isMatch);\n    }\n}",
+            "expectedOutput": "Access Tier: Premium\nVerified: true"
+          },
+          "quizzes": [
+            {
+              "id": "java_q3_1",
+              "question": "Why should '.equals()' be used instead of '==' when comparing Java Strings?",
+              "options": [
+                "'==' causes a compilation error",
+                "'==' checks if both references point to the same memory location, while .equals() compares character contents",
+                "'.equals()' is faster in hardware",
+                "There is no difference"
+              ],
+              "correctIndex": 1,
+              "explanation": "'==' compares object memory identity, whereas .equals() compares the logical character sequence of the Strings."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "java_ch2",
+      "title": "Chapter 2: Control Flow, Loops & Methods",
+      "description": "Decision structures, modern switch expressions, loop iteration, and method mechanics.",
+      "order": 2,
+      "lessons": [
+        {
+          "id": "java_l4",
+          "title": "Conditional Logic & Modern Switch",
+          "order": 1,
+          "readTimeMinutes": 10,
+          "summary": "Master if-else chaining, boolean expressions, and modern Java switch statements.",
+          "content": "### Decision Making in Java\nJava uses standard structured control flow:\n```java\nif (score >= 90) {\n    grade = 'A';\n} else if (score >= 80) {\n    grade = 'B';\n} else {\n    grade = 'C';\n}\n```\n\n### Switch Statements in Java\nUnlike C/C++, Java allows switching on:\n- Primitive integers (`byte`, `short`, `int`, `char`)\n- Enum types\n- `String` objects (since Java 7)\n- Wrapper classes (`Integer`, `Character`)\n\n```java\nswitch (role) {\n    case \"ADMIN\":\n        grantFullAccess();\n        break;\n    case \"USER\":\n        grantStandardAccess();\n        break;\n    default:\n        denyAccess();\n        break;\n}\n```",
+          "code": "public class Main {\n    public static void main(String[] args) {\n        int priority = 1;\n        String label;\n        \n        switch (priority) {\n            case 1:\n                label = \"Critical Urgent\";\n                break;\n            case 2:\n                label = \"Standard Priority\";\n                break;\n            default:\n                label = \"Low Priority\";\n                break;\n        }\n        \n        System.out.println(\"Task Priority: \" + priority);\n        System.out.println(\"Assigned Label: \" + label);\n    }\n}",
+          "expectedOutput": "Task Priority: 1\nAssigned Label: Critical Urgent",
+          "practice": {
+            "title": "Determine User Role Permissions",
+            "instructions": "Evaluate roleLevel = 2 using a switch: case 1 print 'Role: Admin', case 2 print 'Role: Editor', default print 'Role: Viewer'.",
+            "starterCode": "public class Main {\n    public static void main(String[] args) {\n        int roleLevel = 2;\n        switch (roleLevel) {\n            case 1:\n                System.out.println(\"Role: Admin\");\n                break;\n            case 2:\n                System.out.println(\"Role: Editor\");\n                break;\n            default:\n                System.out.println(\"Role: Viewer\");\n                break;\n        }\n    }\n}",
+            "hint": "Match case 2 and print 'Role: Editor' followed by break.",
+            "solutionCode": "public class Main {\n    public static void main(String[] args) {\n        int roleLevel = 2;\n        switch (roleLevel) {\n            case 1:\n                System.out.println(\"Role: Admin\");\n                break;\n            case 2:\n                System.out.println(\"Role: Editor\");\n                break;\n            default:\n                System.out.println(\"Role: Viewer\");\n                break;\n        }\n    }\n}",
+            "expectedOutput": "Role: Editor"
+          },
+          "quizzes": [
+            {
+              "id": "java_q4_1",
+              "question": "Which of the following types can be used as a selector in a Java switch statement?",
+              "options": [
+                "double",
+                "float",
+                "String",
+                "boolean"
+              ],
+              "correctIndex": 2,
+              "explanation": "Java supports byte, short, int, char, String, and enums in switch statements. Floats and doubles are not supported."
+            }
+          ]
+        },
+        {
+          "id": "java_l5",
+          "title": "Iteration & Enhanced For-Each Loops",
+          "order": 2,
+          "readTimeMinutes": 11,
+          "summary": "Classic for loops, while loops, and the elegant enhanced for-each loop over arrays and collections.",
+          "content": "### Loops in Java\nJava offers standard counting loops, condition-controlled loops, and the enhanced for-each loop:\n\n### 1. The Classic `for` Loop\nUsed when the exact count or iteration index is required:\n```java\nfor (int i = 0; i < 5; i++) {\n    System.out.println(i);\n}\n```\n\n### 2. The Enhanced For-Each Loop\nIntroduced in Java 5 to traverse arrays and `Iterable` collections cleanly without manual index tracking:\n```java\nint[] numbers = {10, 20, 30, 40};\nfor (int num : numbers) {\n    System.out.println(num);\n}\n```\n- Eliminates off-by-one errors completely.\n- Cannot modify the original array elements directly during iteration.",
+          "code": "public class Main {\n    public static void main(String[] args) {\n        int sum = 0;\n        for (int i = 1; i <= 4; i++) {\n            sum = sum + i;\n        }\n        System.out.println(\"Sum of 1 to 4: \" + sum);\n    }\n}",
+          "expectedOutput": "Sum of 1 to 4: 10",
+          "practice": {
+            "title": "Compute Factorial with Loop",
+            "instructions": "Compute the factorial of 4 (1 * 2 * 3 * 4 = 24) using a for loop, and print the result.",
+            "starterCode": "public class Main {\n    public static void main(String[] args) {\n        int fact = 1;\n        for (int i = 1; i <= 4; i++) {\n            fact = fact * i;\n        }\n        System.out.println(\"Factorial of 4: \" + fact);\n    }\n}",
+            "hint": "Multiply fact by i inside the loop.",
+            "solutionCode": "public class Main {\n    public static void main(String[] args) {\n        int fact = 1;\n        for (int i = 1; i <= 4; i++) {\n            fact = fact * i;\n        }\n        System.out.println(\"Factorial of 4: \" + fact);\n    }\n}",
+            "expectedOutput": "Factorial of 4: 24"
+          },
+          "quizzes": [
+            {
+              "id": "java_q5_1",
+              "question": "What is the primary advantage of the enhanced for-each loop in Java?",
+              "options": [
+                "It runs twice as fast as a standard for loop",
+                "It eliminates index-handling mistakes and off-by-one errors",
+                "It allows backward traversal automatically",
+                "It permits deleting elements during iteration"
+              ],
+              "correctIndex": 1,
+              "explanation": "Enhanced for-each loops abstract indexing away, preventing off-by-one bugs and array index out of bounds exceptions."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "java_ch3",
+      "title": "Chapter 3: Object-Oriented Java: Classes & Encapsulation",
+      "description": "Class design, constructors, encapsulation with getters/setters, and static members.",
+      "order": 3,
+      "lessons": [
+        {
+          "id": "java_l6",
+          "title": "Classes, Constructors & Encapsulation",
+          "order": 1,
+          "readTimeMinutes": 13,
+          "summary": "Design classes, instantiate objects with constructors, enforce private encapsulation, and write getters and setters.",
+          "content": "### Object-Oriented Programming (OOP) in Java\nJava is fundamentally built on the four pillars of OOP:\n1. **Encapsulation**: Bundling state and behavior, restricting direct access to internal fields.\n2. **Inheritance**: Deriving new classes from existing classes.\n3. **Polymorphism**: Treating derived objects uniformly through a common interface.\n4. **Abstraction**: Hiding complex internal implementation details.\n\n### Designing a Class\n```java\npublic class User {\n    // 1. Private fields (encapsulated)\n    private String username;\n    private int score;\n\n    // 2. Constructor\n    public User(String username, int score) {\n        this.username = username;\n        this.score = score;\n    }\n\n    // 3. Public Getters & Setters\n    public String getUsername() {\n        return username;\n    }\n    public int getScore() {\n        return score;\n    }\n}\n```",
+          "code": "public class Main {\n    static class Account {\n        private String owner;\n        private int balance;\n        \n        public Account(String owner, int balance) {\n            this.owner = owner;\n            this.balance = balance;\n        }\n        \n        public void display() {\n            System.out.println(\"Account Owner: \" + owner);\n            System.out.println(\"Balance: $\" + balance);\n        }\n    }\n\n    public static void main(String[] args) {\n        Account acc = new Account(\"DevLead\", 5000);\n        acc.display();\n    }\n}",
+          "expectedOutput": "Account Owner: DevLead\nBalance: $5000",
+          "practice": {
+            "title": "Model a Product Class",
+            "instructions": "Create a Product class with title ('Laptop') and price (1200), and print its details.",
+            "starterCode": "public class Main {\n    static class Product {\n        String title;\n        int price;\n        public Product(String title, int price) {\n            this.title = title;\n            this.price = price;\n        }\n    }\n\n    public static void main(String[] args) {\n        Product p = new Product(\"Laptop\", 1200);\n        System.out.println(\"Product: \" + p.title);\n        System.out.println(\"Price: $\" + p.price);\n    }\n}",
+            "hint": "Instantiate Product with name and price.",
+            "solutionCode": "public class Main {\n    static class Product {\n        String title;\n        int price;\n        public Product(String title, int price) {\n            this.title = title;\n            this.price = price;\n        }\n    }\n\n    public static void main(String[] args) {\n        Product p = new Product(\"Laptop\", 1200);\n        System.out.println(\"Product: \" + p.title);\n        System.out.println(\"Price: $\" + p.price);\n    }\n}",
+            "expectedOutput": "Product: Laptop\nPrice: $1200"
+          },
+          "quizzes": [
+            {
+              "id": "java_q6_1",
+              "question": "What is the primary benefit of making fields 'private' and providing getters/setters in Java?",
+              "options": [
+                "It reduces memory usage",
+                "It protects internal state from unauthorized modification and enforces validation rules",
+                "It enables multiple inheritance",
+                "It compiles the class into C code"
+              ],
+              "correctIndex": 1,
+              "explanation": "Encapsulation prevents external code from putting objects into an invalid state and allows changing internal representation without breaking callers."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "java_ch4",
+      "title": "Chapter 4: Inheritance, Polymorphism & Interfaces",
+      "description": "Class extension, @Override, dynamic dispatch, and interface contracts.",
+      "order": 4,
+      "lessons": [
+        {
+          "id": "java_l7",
+          "title": "Inheritance, super & Method Overriding",
+          "order": 1,
+          "readTimeMinutes": 12,
+          "summary": "Inherit behavior with extends, invoke parent constructors with super(), and override methods safely with @Override.",
+          "content": "### Class Inheritance in Java\nIn Java, a class extends another using the `extends` keyword. Java supports **single inheritance of classes**: every class can inherit from at most one parent class (preventing the C++ diamond problem).\n\n### The `super` Keyword\n- `super()`: Invokes the parent class constructor (must be the first line of the child constructor).\n- `super.method()`: Invokes a parent method that has been overridden in the child.\n\n### Method Overriding & `@Override`\nWhen a child class re-implements a parent method, annotating with `@Override` instructs the compiler to verify that the method actually matches a parent signature, preventing silent typo bugs.",
+          "code": "public class Main {\n    static class Vehicle {\n        public void start() {\n            System.out.println(\"Vehicle Engine Started\");\n        }\n    }\n    \n    static class ElectricCar extends Vehicle {\n        @Override\n        public void start() {\n            System.out.println(\"Electric Powertrain Engaged\");\n        }\n    }\n\n    public static void main(String[] args) {\n        Vehicle myCar = new ElectricCar();\n        myCar.start(); // Polymorphic invocation!\n    }\n}",
+          "expectedOutput": "Electric Powertrain Engaged",
+          "practice": {
+            "title": "Implement Employee Subclass",
+            "instructions": "Create Person base with greet() 'Hello, Person', and Dev subclass that overrides greet() to print 'Hello, Developer'.",
+            "starterCode": "public class Main {\n    static class Person {\n        public void greet() {\n            System.out.println(\"Hello, Person\");\n        }\n    }\n    \n    static class Dev extends Person {\n        @Override\n        public void greet() {\n            System.out.println(\"Hello, Developer\");\n        }\n    }\n\n    public static void main(String[] args) {\n        Person p = new Dev();\n        p.greet();\n    }\n}",
+            "hint": "Override greet() in Dev and call via Person p = new Dev().",
+            "solutionCode": "public class Main {\n    static class Person {\n        public void greet() {\n            System.out.println(\"Hello, Person\");\n        }\n    }\n    \n    static class Dev extends Person {\n        @Override\n        public void greet() {\n            System.out.println(\"Hello, Developer\");\n        }\n    }\n\n    public static void main(String[] args) {\n        Person p = new Dev();\n        p.greet();\n    }\n}",
+            "expectedOutput": "Hello, Developer"
+          },
+          "quizzes": [
+            {
+              "id": "java_q7_1",
+              "question": "Can a Java class extend multiple parent classes simultaneously (e.g. class C extends A, B)?",
+              "options": [
+                "Yes, Java supports multiple inheritance of classes",
+                "No, Java supports single class inheritance, though it can implement multiple interfaces",
+                "Only if both parents are abstract",
+                "Only in Java 21"
+              ],
+              "correctIndex": 1,
+              "explanation": "Java strictly prohibits multiple inheritance of state (classes) to avoid complexity and ambiguity, allowing multiple inheritance only via interfaces."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "java_ch5",
+      "title": "Chapter 5: Exception Handling & Robust Systems",
+      "description": "Checked vs unchecked exceptions, try-catch-finally, and error resilience.",
+      "order": 5,
+      "lessons": [
+        {
+          "id": "java_l8",
+          "title": "Exception Handling: Checked vs Unchecked",
+          "order": 1,
+          "readTimeMinutes": 12,
+          "summary": "Handle runtime errors gracefully with try-catch-finally blocks, understanding checked vs RuntimeException.",
+          "content": "### Why Exceptions?\nExceptions separate error handling code from normal business logic. In Java, all exceptions inherit from `java.lang.Throwable`:\n\n### Checked vs Unchecked Exceptions\n1. **Checked Exceptions** (`Exception` subclasses, e.g. `IOException`, `SQLException`):\n   - The compiler FORCES the developer to either handle with `try-catch` or declare in the method signature with `throws`.\n   - Represents recoverable conditions (missing file, network timeout).\n2. **Unchecked Exceptions** (`RuntimeException` subclasses, e.g. `NullPointerException`, `IndexOutOfBoundsException`):\n   - Compiler does not force handling.\n   - Represents developer bugs or logic flaws.\n\n### Try-Catch-Finally\nThe `finally` block ALWAYS executes, regardless of whether an exception was thrown or caught, making it ideal for closing connections and cleaning up resources.",
+          "code": "public class Main {\n    public static void main(String[] args) {\n        try {\n            int numerator = 100;\n            int denominator = 5;\n            int result = numerator / denominator;\n            System.out.println(\"Computation Result: \" + result);\n        } catch (ArithmeticException e) {\n            System.out.println(\"Error: Cannot divide by zero\");\n        } finally {\n            System.out.println(\"Execution Cleaned Up\");\n        }\n    }\n}",
+          "expectedOutput": "Computation Result: 20\nExecution Cleaned Up",
+          "practice": {
+            "title": "Catch Arithmetic Exception",
+            "instructions": "Wrap an operation in try-catch to print 'Error caught' if an exception occurs.",
+            "starterCode": "public class Main {\n    public static void main(String[] args) {\n        try {\n            System.out.println(\"Executing Safe Block\");\n        } catch (Exception e) {\n            System.out.println(\"Error caught\");\n        } finally {\n            System.out.println(\"Finally Block Complete\");\n        }\n    }\n}",
+            "hint": "Use try { ... } catch (Exception e) { ... } finally { ... }",
+            "solutionCode": "public class Main {\n    public static void main(String[] args) {\n        try {\n            System.out.println(\"Executing Safe Block\");\n        } catch (Exception e) {\n            System.out.println(\"Error caught\");\n        } finally {\n            System.out.println(\"Finally Block Complete\");\n        }\n    }\n}",
+            "expectedOutput": "Executing Safe Block\nFinally Block Complete"
+          },
+          "quizzes": [
+            {
+              "id": "java_q8_1",
+              "question": "When does the 'finally' block execute in a Java try-catch statement?",
+              "options": [
+                "Only when an exception is successfully caught",
+                "Only when NO exception is thrown",
+                "Always, whether an exception occurred or not",
+                "Only if System.exit() is called"
+              ],
+              "correctIndex": 2,
+              "explanation": "The finally block is guaranteed to execute after try and catch blocks finish, ensuring resources are reliably closed."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,592 @@
+{
+  "id": "c",
+  "title": "C Programming",
+  "tagline": "Master system-level programming, pointers, and low-level computer architecture",
+  "level": "Beginner to Advanced",
+  "estimatedHours": 24,
+  "badge": "C",
+  "accentColor": "#0284C7",
+  "description": "C is the foundation of modern computing, operating systems, embedded hardware, and high-performance engines. This comprehensive curriculum teaches low-level memory architecture, pointer arithmetic, memory management, structures, and systems programming.",
+  "chapters": [
+    {
+      "id": "c_ch1",
+      "title": "Chapter 1: Getting Started & C Compilation Model",
+      "description": "Program structure, the 4-stage compilation pipeline, data types, and operators.",
+      "order": 1,
+      "lessons": [
+        {
+          "id": "c_l1",
+          "title": "Structure of a C Program & Compilation Pipeline",
+          "order": 1,
+          "readTimeMinutes": 10,
+          "summary": "Deep dive into preprocessor directives, int main(), return codes, and the four stages of the C compilation pipeline.",
+          "content": "### What is C and Why Does It Matter?\nDeveloped by Dennis Ritchie at Bell Laboratories in 1972 to build the Unix operating system, C provides bare-metal hardware control with structured high-level constructs. Nearly every modern runtime (Python, JVM, Node.js), kernel (Linux, Windows, macOS), and database engine (PostgreSQL, SQLite) is implemented in C or C++.\n\n### The Anatomy of a C Source File\nEvery idiomatic C program comprises four essential structural elements:\n1. **Preprocessor Directives**: Lines beginning with `#` are processed before compilation. `#include <stdio.h>` copies the standard input/output header prototypes into the file.\n2. **The Main Entry Point**: `int main(void)` or `int main(int argc, char *argv[])` serves as the execution entry point invoked by the operating system.\n3. **Statements and Semicolons**: C is a semicolon-terminated language. Semicolons delimit statements, not newlines.\n4. **Return Exit Status**: `return 0;` transfers execution status back to the host operating system shell. In Unix conventions, `0` indicates success, while non-zero values signal specific error codes.\n\n### The Four Stages of Compilation\nUnderstanding how source code transforms into an executable binary is crucial for debugging:\n1. **Preprocessing (`cpp`)**: Strips comments, expands macros (`#define`), and injects header files (`#include`). Produces intermediate `.i` files.\n2. **Compilation proper (`gcc -S`)**: Translates preprocessed C code into target-specific assembly code (`.s` file), performing syntax validation and optimizations.\n3. **Assembly (`as`)**: Converts assembly mnemonics into relocatable machine bytecode object files (`.o` or `.obj`).\n4. **Linking (`ld`)**: Combines object files with system C runtime libraries (e.g., `libc`) to resolve external symbols (such as `printf`) and produces the final executable binary.\n\n### Common Beginner Pitfalls\n- Forgetting `#include <stdio.h>` leading to implicit declaration warnings.\n- Leaving out `return 0;` in older standards or failing to match return types.\n- Missing semicolons at the end of statements causing cascading compiler errors.\n- Misunderstanding that C execution starts in `main()` regardless of where other functions are defined.",
+          "code": "#include <stdio.h>\n\nint main() {\n    printf(\"=== C Compilation Model Initialized ===\\n\");\n    printf(\"Phase 1: Preprocessing expanded headers\\n\");\n    printf(\"Phase 2: Translation to assembly code\\n\");\n    printf(\"Phase 3: Assembled to object code\\n\");\n    printf(\"Phase 4: Linked into executable\\n\");\n    printf(\"Status: Execution Successful (Code 0)\\n\");\n    return 0;\n}",
+          "expectedOutput": "=== C Compilation Model Initialized ===\nPhase 1: Preprocessing expanded headers\nPhase 2: Translation to assembly code\nPhase 3: Assembled to object code\nPhase 4: Linked into executable\nStatus: Execution Successful (Code 0)",
+          "practice": {
+            "title": "Construct a System Banner",
+            "instructions": "Print a 3-line system initialization banner displaying the Application Name, Version, and Platform Environment.",
+            "starterCode": "#include <stdio.h>\n\nint main() {\n    printf(\"App: DevLearn Core\\n\");\n    printf(\"Version: 1.0.0\\n\");\n    printf(\"Environment: Embedded C Engine\\n\");\n    return 0;\n}",
+            "hint": "Use printf() with newline \\n at the end of each string to ensure line breaks.",
+            "solutionCode": "#include <stdio.h>\n\nint main() {\n    printf(\"App: DevLearn Core\\n\");\n    printf(\"Version: 1.0.0\\n\");\n    printf(\"Environment: Embedded C Engine\\n\");\n    return 0;\n}",
+            "expectedOutput": "App: DevLearn Core\nVersion: 1.0.0\nEnvironment: Embedded C Engine"
+          },
+          "quizzes": [
+            {
+              "id": "c_q1_1",
+              "question": "Which phase of the compilation process replaces #include directives with actual header file contents?",
+              "options": [
+                "The Linker",
+                "The Preprocessor",
+                "The Assembler",
+                "The Code Optimizer"
+              ],
+              "correctIndex": 1,
+              "explanation": "The C Preprocessor handles all directives beginning with '#' prior to compilation, copying header definitions directly into the translation unit."
+            },
+            {
+              "id": "c_q1_2",
+              "question": "What is the primary role of the linker in C program creation?",
+              "options": [
+                "Validating variable type consistency",
+                "Converting C syntax into assembly mnemonics",
+                "Combining object files and resolving library references into an executable",
+                "Executing the main function in memory"
+              ],
+              "correctIndex": 2,
+              "explanation": "The linker combines relocatable object files (.o) and resolves references to library functions like printf to output the final binary."
+            }
+          ]
+        },
+        {
+          "id": "c_l2",
+          "title": "Primitive Data Types, Memory Sizes & Format Specifiers",
+          "order": 2,
+          "readTimeMinutes": 12,
+          "summary": "Master C primitive types, storage byte representations, integer signs, float precision, and printf/scanf format specifiers.",
+          "content": "### Data Storage & Memory in C\nIn C, every variable is a direct memory address with a fixed byte width. Because C does not abstract the machine representation, understanding data types means understanding byte boundaries:\n\n### Standard Primitive Data Types\n1. **`char`**: Typically 1 byte (8 bits). Stores either an ASCII character (`'A'`) or a signed integer (-128 to 127).\n2. **`short`**: Minimum 2 bytes (16 bits), storing -32,768 to 32,767.\n3. **`int`**: Typically 4 bytes (32 bits) on modern architectures, storing values from -2,147,483,648 to 2,147,483,647.\n4. **`long` / `long long`**: 4 or 8 bytes (32/64 bits) for large integer computations.\n5. **`float`**: 4-byte IEEE 754 single-precision floating point (~6-7 decimal digits of precision).\n6. **`double`**: 8-byte IEEE 754 double-precision floating point (~15-17 decimal digits of precision).\n\n### Type Modifiers: Signed and Unsigned\n- `unsigned int`: Discards the sign bit to represent purely non-negative numbers, doubling the positive range (0 to 4,294,967,295 for 32-bit).\n- `signed`: Default for integer types; supports both positive and negative values using Two's Complement representation.\n\n### Format Specifiers Reference Table\n- `%d` or `%i`: Signed decimal integer\n- `%u`: Unsigned decimal integer\n- `%f`: Floating-point decimal\n- `%.2f`: Float rounded to two decimal places\n- `%c`: Single character\n- `%s`: Character array / string literal\n- `%p`: Memory address pointer (hexadecimal)\n- `%ld`: Long integer\n\n### Common Beginner Pitfalls & Edge Cases\n- **Integer Overflow**: Exceeding the maximum integer limit wraps around silently in signed integers, causing undefined behavior.\n- **Mismatched Specifiers**: Using `%d` for a float or `%f` for an integer reads the wrong bits from the argument register/stack, printing garbage numbers.\n- **Float Roundoff**: Floating-point numbers cannot represent decimal fractions like 0.1 exactly in binary, leading to minute rounding discrepancies.",
+          "code": "#include <stdio.h>\n\nint main() {\n    int studentId = 4021;\n    float gpa = 3.85;\n    char grade = 'A';\n    int credits = 120;\n    \n    printf(\"Student ID: %d\\n\", studentId);\n    printf(\"Academic GPA: %.2f\\n\", gpa);\n    printf(\"Evaluation Grade: %c\\n\", grade);\n    printf(\"Total Credits: %d\\n\", credits);\n    return 0;\n}",
+          "expectedOutput": "Student ID: 4021\nAcademic GPA: 3.85\nEvaluation Grade: A\nTotal Credits: 120",
+          "practice": {
+            "title": "Compute Server Resource Metrics",
+            "instructions": "Declare variables for CPU cores (int = 8), memory in GB (int = 32), and load average (float = 1.45). Print formatted metrics.",
+            "starterCode": "#include <stdio.h>\n\nint main() {\n    int cores = 8;\n    int ram = 32;\n    float load = 1.45;\n    printf(\"CPU Cores: %d\\n\", cores);\n    printf(\"System RAM: %d GB\\n\", ram);\n    printf(\"Load Average: %.2f\\n\", load);\n    return 0;\n}",
+            "hint": "Use %d for integers and %.2f for the float load average.",
+            "solutionCode": "#include <stdio.h>\n\nint main() {\n    int cores = 8;\n    int ram = 32;\n    float load = 1.45;\n    printf(\"CPU Cores: %d\\n\", cores);\n    printf(\"System RAM: %d GB\\n\", ram);\n    printf(\"Load Average: %.2f\\n\", load);\n    return 0;\n}",
+            "expectedOutput": "CPU Cores: 8\nSystem RAM: 32 GB\nLoad Average: 1.45"
+          },
+          "quizzes": [
+            {
+              "id": "c_q2_1",
+              "question": "What occurs when an unsigned 8-bit integer holding 255 is incremented by 1?",
+              "options": [
+                "A compilation error occurs",
+                "It throws a segmentation fault",
+                "It wraps around to 0",
+                "It holds an indeterminate NaN value"
+              ],
+              "correctIndex": 2,
+              "explanation": "Unsigned arithmetic in C is defined by the standard to wrap modulo 2^N. For an 8-bit integer, 255 + 1 wraps to 0."
+            },
+            {
+              "id": "c_q2_2",
+              "question": "Which format specifier prints a double rounded to exactly three decimal places?",
+              "options": [
+                "%3d",
+                "%.3f",
+                "%f.3",
+                "%lf.3"
+              ],
+              "correctIndex": 1,
+              "explanation": "The precision modifier %.3f tells printf to output a floating-point number with exactly 3 digits after the decimal point."
+            }
+          ]
+        },
+        {
+          "id": "c_l3",
+          "title": "Operators, Precedence & Type Conversion",
+          "order": 3,
+          "readTimeMinutes": 11,
+          "summary": "Arithmetic, relational, logical, and bitwise operators, implicit conversion rules, and explicit type casting.",
+          "content": "### Expressions and Operators\nOperators in C instruct the CPU to perform specific mathematical, logical, or bit manipulation operations. \n\n### Operator Categories\n1. **Arithmetic**: `+`, `-`, `*`, `/`, `%` (modulo - remainder after integer division).\n   - *Critical Rule*: Integer division truncates towards zero! `7 / 2` evaluates to `3`, not `3.5`.\n2. **Relational**: `==` (equality), `!=` (inequality), `>`, `<`, `>=`, `<=`. Return `1` (true) or `0` (false).\n3. **Logical**: `&&` (AND), `||` (OR), `!` (NOT). Evaluated with **short-circuit evaluation**: if the left operand determines the outcome, the right operand is never executed.\n4. **Bitwise**: `&` (AND), `|` (OR), `^` (XOR), `~` (NOT), `<<` (left shift), `>>` (right shift).\n5. **Increment / Decrement**: \n   - `++x` (Prefix): Increments value before using it in the expression.\n   - `x++` (Postfix): Evaluates expression with current value, then increments.\n\n### Operator Precedence & Associativity\nOperators have strict hierarchy:\n- Highest: Parentheses `()`, array subscript `[]`\n- High: Unary `!`, `++`, `--`, `(type)`\n- Medium: Multiplicative `*`, `/`, `%`, followed by Additive `+`, `-`\n- Low: Relational `<`, `>`, then Equality `==`, `!=`\n- Lower: Logical `&&`, then `||`\n- Lowest: Assignment `=`, `+=`, `*=`\n\n### Type Conversion & Casting\n- **Implicit Conversion (Coercion)**: When operands differ in type, C promotes the smaller type to the larger type (e.g., `int + float` promotes integer to float).\n- **Explicit Casting**: Preceding an expression with `(target_type)` manually converts the value:\n```c\nint total = 17;\nint count = 5;\nfloat average = (float)total / count; // 3.4 instead of truncated 3.0\n```",
+          "code": "#include <stdio.h>\n\nint main() {\n    int totalMarks = 85;\n    int subjectCount = 4;\n    float preciseAverage = (float)totalMarks / subjectCount;\n    int roundedAverage = totalMarks / subjectCount;\n    \n    printf(\"Total Marks: %d\\n\", totalMarks);\n    printf(\"Integer Division Average: %d\\n\", roundedAverage);\n    printf(\"Explicit Cast Average: %.2f\\n\", preciseAverage);\n    return 0;\n}",
+          "expectedOutput": "Total Marks: 85\nInteger Division Average: 21\nExplicit Cast Average: 21.25",
+          "practice": {
+            "title": "Compute Rectangle Aspect Ratio",
+            "instructions": "Compute the exact floating-point ratio of width (1920) to height (1080) using explicit casting, and print formatted with %.2f.",
+            "starterCode": "#include <stdio.h>\n\nint main() {\n    int width = 1920;\n    int height = 1080;\n    float ratio = (float)width / height;\n    printf(\"Resolution: %d x %d\\n\", width, height);\n    printf(\"Aspect Ratio: %.2f\\n\", ratio);\n    return 0;\n}",
+            "hint": "Cast width to (float) before dividing to avoid integer truncation.",
+            "solutionCode": "#include <stdio.h>\n\nint main() {\n    int width = 1920;\n    int height = 1080;\n    float ratio = (float)width / height;\n    printf(\"Resolution: %d x %d\\n\", width, height);\n    printf(\"Aspect Ratio: %.2f\\n\", ratio);\n    return 0;\n}",
+            "expectedOutput": "Resolution: 1920 x 1080\nAspect Ratio: 1.78"
+          },
+          "quizzes": [
+            {
+              "id": "c_q3_1",
+              "question": "What is the result of the expression: 9 / 2 in C?",
+              "options": [
+                "4.5",
+                "4",
+                "5",
+                "Undefined compiler behavior"
+              ],
+              "correctIndex": 1,
+              "explanation": "When both operands of division are integers, C performs integer division and truncates the fractional part, resulting in 4."
+            },
+            {
+              "id": "c_q3_2",
+              "question": "What happens during short-circuit evaluation of (A && B) when A is false?",
+              "options": [
+                "B is evaluated immediately",
+                "Both expressions are re-evaluated in reverse",
+                "B is completely skipped because the result is guaranteed false",
+                "A runtime exception is thrown"
+              ],
+              "correctIndex": 2,
+              "explanation": "In logical AND (&&), if the left operand is 0 (false), the entire expression cannot be true, so C guarantees that the right side is skipped."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c_ch2",
+      "title": "Chapter 2: Control Flow & Decision Logic",
+      "description": "Branching, conditionals, switch fallthrough, and iterative loop constructs.",
+      "order": 2,
+      "lessons": [
+        {
+          "id": "c_l4",
+          "title": "Conditional Branching with if, else & Ternary Expressions",
+          "order": 1,
+          "readTimeMinutes": 10,
+          "summary": "Boolean truth values in C, if-else chaining, nested conditions, and the ternary conditional operator.",
+          "content": "### How C Represents Truth\nUnlike higher-level languages with a native boolean primitive, classic C treats truth values numerically:\n- Any non-zero numeric value (positive or negative) evaluates to **true**.\n- Zero (`0`) evaluates to **false**.\n- The C99 standard introduced `<stdbool.h>` providing `bool`, `true` (1), and `false` (0), but the underlying representation remains integer-based.\n\n### If-Else Statements\nThe basic decision-making structure evaluates a condition and executes code conditionally:\n```c\nif (score >= 90) {\n    grade = 'A';\n} else if (score >= 80) {\n    grade = 'B';\n} else {\n    grade = 'C';\n}\n```\n\n### The Ternary Conditional Operator (`?:`)\nThe ternary operator is C's only three-operand operator, offering an inline expression form of if-else:\n`condition ? expression_if_true : expression_if_false;`\n```c\nint max = (a > b) ? a : b;\n```\n\n### Common Beginner Pitfalls\n- **Accidental Assignment (`=` vs `==`)**: Writing `if (x = 5)` instead of `if (x == 5)` assigns 5 to x, evaluates to true (non-zero), and executes the block unconditionally!\n- **Dangling Else**: When omitting braces `{}` with nested if-else, the `else` binds to the closest preceding `if`, creating subtle logic bugs. Always use braces!",
+          "code": "#include <stdio.h>\n\nint main() {\n    int score = 88;\n    char grade;\n    \n    if (score >= 90) {\n        grade = 'A';\n    } else if (score >= 80) {\n        grade = 'B';\n    } else {\n        grade = 'C';\n    }\n    \n    int isHonorRoll = (score >= 85) ? 1 : 0;\n    \n    printf(\"Score: %d\\n\", score);\n    printf(\"Assigned Grade: %c\\n\", grade);\n    printf(\"Honor Roll Status: %d\\n\", isHonorRoll);\n    return 0;\n}",
+          "expectedOutput": "Score: 88\nAssigned Grade: B\nHonor Roll Status: 1",
+          "practice": {
+            "title": "Evaluate Temperature Status",
+            "instructions": "Declare a variable temperature = 102. Write an if-else check: if temperature > 100 print 'Warning: Overheating', else print 'Status: Normal'.",
+            "starterCode": "#include <stdio.h>\n\nint main() {\n    int temp = 102;\n    if (temp > 100) {\n        printf(\"Warning: Overheating\\n\");\n    } else {\n        printf(\"Status: Normal\\n\");\n    }\n    return 0;\n}",
+            "hint": "Use if (temp > 100) followed by printf statements.",
+            "solutionCode": "#include <stdio.h>\n\nint main() {\n    int temp = 102;\n    if (temp > 100) {\n        printf(\"Warning: Overheating\\n\");\n    } else {\n        printf(\"Status: Normal\\n\");\n    }\n    return 0;\n}",
+            "expectedOutput": "Warning: Overheating"
+          },
+          "quizzes": [
+            {
+              "id": "c_q4_1",
+              "question": "What is the logical result of: if (-5) in C?",
+              "options": [
+                "Compiler error because numbers cannot be negative in conditions",
+                "Evaluates to false because -5 is below zero",
+                "Evaluates to true because -5 is non-zero",
+                "Throws an integer underflow exception"
+              ],
+              "correctIndex": 2,
+              "explanation": "In C, any non-zero value evaluates to true. Since -5 is not equal to 0, the condition succeeds."
+            }
+          ]
+        },
+        {
+          "id": "c_l5",
+          "title": "Switch Statements & Fallthrough Mechanics",
+          "order": 2,
+          "readTimeMinutes": 10,
+          "summary": "Multi-way branching with switch, case constants, the critical role of break, and intentional fallthrough.",
+          "content": "### When to Use Switch\nWhen comparing a single integer or character variable against multiple constant values, a `switch` statement provides cleaner, more readable code than a ladder of `if-else if` blocks. Furthermore, compilers can optimize switches into **jump tables** (O(1) dispatch).\n\n### Anatomy of a Switch Statement\n```c\nswitch (expression) {\n    case CONST_1:\n        // Statements\n        break;\n    case CONST_2:\n        // Statements\n        break;\n    default:\n        // Executed if no case matched\n        break;\n}\n```\n\n### The Fallthrough Phenomenon\nUnlike modern languages that automatically break between cases, C falls through to subsequent cases unless an explicit `break;` is encountered. While often a source of bugs, intentional fallthrough allows grouping multiple cases:\n```c\nswitch (errorCode) {\n    case 401:\n    case 403:\n        printf(\"Access Denied\\n\");\n        break;\n    case 404:\n        printf(\"Resource Not Found\\n\");\n        break;\n}\n```\n\n### Constraints of Switch\n- The switch expression MUST evaluate to an integer or character type (floats and strings are prohibited).\n- Case labels must be compile-time constants (literals or `#define` macros).",
+          "code": "#include <stdio.h>\n\nint main() {\n    int statusCode = 200;\n    \n    switch (statusCode) {\n        case 200:\n            printf(\"HTTP Status: OK (Success)\\n\");\n            break;\n        case 404:\n            printf(\"HTTP Status: Not Found\\n\");\n            break;\n        case 500:\n            printf(\"HTTP Status: Internal Server Error\\n\");\n            break;\n        default:\n            printf(\"HTTP Status: Unknown Code\\n\");\n            break;\n    }\n    return 0;\n}",
+          "expectedOutput": "HTTP Status: OK (Success)",
+          "practice": {
+            "title": "Translate Day Index to Name",
+            "instructions": "Use a switch statement to translate dayNumber = 3 to print 'Wednesday'. Include a default case.",
+            "starterCode": "#include <stdio.h>\n\nint main() {\n    int dayNumber = 3;\n    switch (dayNumber) {\n        case 1:\n            printf(\"Monday\\n\");\n            break;\n        case 2:\n            printf(\"Tuesday\\n\");\n            break;\n        case 3:\n            printf(\"Wednesday\\n\");\n            break;\n        default:\n            printf(\"Other Day\\n\");\n            break;\n    }\n    return 0;\n}",
+            "hint": "Check case 3 and print 'Wednesday' followed by break.",
+            "solutionCode": "#include <stdio.h>\n\nint dayNumber = 3;\n    switch (dayNumber) {\n        case 1:\n            printf(\"Monday\\n\");\n            break;\n        case 2:\n            printf(\"Tuesday\\n\");\n            break;\n        case 3:\n            printf(\"Wednesday\\n\");\n            break;\n        default:\n            printf(\"Other Day\\n\");\n            break;\n    }\n    return 0;\n}",
+            "expectedOutput": "Wednesday"
+          },
+          "quizzes": [
+            {
+              "id": "c_q5_1",
+              "question": "What happens if you omit the 'break;' statement at the end of a matched case?",
+              "options": [
+                "The program halts with a compiler warning",
+                "Execution immediately exits the switch block",
+                "Execution falls through and continues executing statements in subsequent cases",
+                "The default case runs instead"
+              ],
+              "correctIndex": 2,
+              "explanation": "Without break, C continues execution sequentially into the next case, executing its instructions until a break or the end of the switch is reached."
+            }
+          ]
+        },
+        {
+          "id": "c_l6",
+          "title": "Iteration Loops (for, while, do-while) & Control Jumps",
+          "order": 3,
+          "readTimeMinutes": 12,
+          "summary": "Loop constructs, counting loops, condition-controlled loops, break, continue, and loop invariant reasoning.",
+          "content": "### Iteration in C\nLoops repeat a block of code as long as a condition evaluates to true (non-zero). C provides three loop variations:\n\n### 1. The `for` Loop\nIdeal for counting loops when the number of iterations is known ahead of time:\n`for (initialization; condition; increment/step) { ... }`\n- **Initialization**: Runs once before the loop begins.\n- **Condition**: Evaluated before each iteration; if false, loop terminates.\n- **Step**: Evaluated after each iteration.\n\n### 2. The `while` Loop\nPre-test loop: condition is evaluated before the body executes. If initially false, the loop body never runs:\n```c\nwhile (balance > 0) {\n    processPayment();\n}\n```\n\n### 3. The `do-while` Loop\nPost-test loop: the loop body executes at least once before the condition is checked. Ideal for user input prompts.\n\n### Loop Control Statements\n- `break`: Immediately exits the nearest enclosing loop.\n- `continue`: Skips the remainder of the current iteration and jumps directly to the step/condition evaluation.\n\n### Infinite Loops & Off-by-One Errors\n- An off-by-one bug occurs when using `<` instead of `<=` or starting counting at 1 instead of 0, resulting in iterating N-1 or N+1 times.\n- Loop termination requires that state within the loop modifies the terminating condition.",
+          "code": "#include <stdio.h>\n\nint main() {\n    printf(\"=== For Loop Execution ===\\n\");\n    for (int i = 1; i <= 3; i++) {\n        printf(\"Iteration: %d\\n\", i);\n    }\n    \n    int count = 2;\n    printf(\"=== While Loop Countdown ===\\n\");\n    while (count > 0) {\n        printf(\"Countdown: %d\\n\", count);\n        count = count - 1;\n    }\n    printf(\"Liftoff!\\n\");\n    return 0;\n}",
+          "expectedOutput": "=== For Loop Execution ===\nIteration: 1\nIteration: 2\nIteration: 3\n=== While Loop Countdown ===\nCountdown: 2\nCountdown: 1\nLiftoff!",
+          "practice": {
+            "title": "Compute Sum of Consecutive Integers",
+            "instructions": "Use a for loop to calculate and print the sum of integers from 1 to 5.",
+            "starterCode": "#include <stdio.h>\n\nint main() {\n    int total = 0;\n    for (int i = 1; i <= 5; i++) {\n        total = total + i;\n    }\n    printf(\"Sum from 1 to 5: %d\\n\", total);\n    return 0;\n}",
+            "hint": "Accumulate each i into total: total = total + i;",
+            "solutionCode": "#include <stdio.h>\n\nint main() {\n    int total = 0;\n    for (int i = 1; i <= 5; i++) {\n        total = total + i;\n    }\n    printf(\"Sum from 1 to 5: %d\\n\", total);\n    return 0;\n}",
+            "expectedOutput": "Sum from 1 to 5: 15"
+          },
+          "quizzes": [
+            {
+              "id": "c_q6_1",
+              "question": "What is the key difference between while and do-while loops?",
+              "options": [
+                "do-while runs faster in hardware",
+                "while loops only accept integer conditions",
+                "do-while guarantees that the loop body executes at least once",
+                "while loops cannot contain break statements"
+              ],
+              "correctIndex": 2,
+              "explanation": "Because do-while evaluates its condition at the bottom, the body is guaranteed to execute at least once regardless of initial state."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c_ch3",
+      "title": "Chapter 3: Modular Programming & Functions",
+      "description": "Function anatomy, prototypes, call stack activation frames, scope, and recursion.",
+      "order": 3,
+      "lessons": [
+        {
+          "id": "c_l7",
+          "title": "Function Declarations, Prototypes & Call Stack",
+          "order": 1,
+          "readTimeMinutes": 11,
+          "summary": "Function structure, forward declarations (prototypes), parameter passing by value, and stack frames.",
+          "content": "### Modular Decomposition\nFunctions allow developers to partition complex tasks into reusable, isolated subroutines. In C, functions follow a strict signature:\n`return_type function_name(parameter_list) { ... }`\n\n### Function Prototypes\nC compiles files sequentially from top to bottom. If function `A` calls function `B` before `B` is defined, the compiler emits an error or assumes an implicit `int` return type. A **function prototype** declares the function signature ahead of time:\n```c\n// Prototype declaration\nint calculateArea(int width, int height);\n\nint main() {\n    int a = calculateArea(5, 10);\n    return 0;\n}\n\n// Full definition\nint calculateArea(int width, int height) {\n    return width * height;\n}\n```\n\n### The Call Stack & Activation Frames\nWhen a function is called:\n1. Arguments are pushed into registers or onto the CPU call stack.\n2. The return instruction pointer (IP) is pushed onto the stack.\n3. A new **stack frame** is allocated for the function's local variables.\n4. When the function returns, its stack frame is discarded, restoring the caller's frame.\n\n### Pass-by-Value Default\nBy default, C passes all function arguments by value. The function receives a copy of the caller's variable. Modifying a parameter inside the function has zero effect on the caller's original variable.",
+          "code": "#include <stdio.h>\n\nint multiply(int x, int y) {\n    return x * y;\n}\n\nint square(int n) {\n    return multiply(n, n);\n}\n\nint main() {\n    int val = 6;\n    int squared = square(val);\n    printf(\"Original Value: %d\\n\", val);\n    printf(\"Squared Result: %d\\n\", squared);\n    return 0;\n}",
+          "expectedOutput": "Original Value: 6\nSquared Result: 36",
+          "practice": {
+            "title": "Implement a Perimeter Calculator",
+            "instructions": "Create a function `int getPerimeter(int length, int width)` that returns 2 * (length + width). Compute and print perimeter for length=10, width=5.",
+            "starterCode": "#include <stdio.h>\n\nint getPerimeter(int length, int width) {\n    return 2 * (length + width);\n}\n\nint main() {\n    int p = getPerimeter(10, 5);\n    printf(\"Perimeter: %d\\n\", p);\n    return 0;\n}",
+            "hint": "Return 2 * (length + width) from the function.",
+            "solutionCode": "#include <stdio.h>\n\nint getPerimeter(int length, int width) {\n    return 2 * (length + width);\n}\n\nint main() {\n    int p = getPerimeter(10, 5);\n    printf(\"Perimeter: %d\\n\", p);\n    return 0;\n}",
+            "expectedOutput": "Perimeter: 30"
+          },
+          "quizzes": [
+            {
+              "id": "c_q7_1",
+              "question": "Why are function prototypes placed at the top of C files or in headers?",
+              "options": [
+                "To allocate memory for function code",
+                "To inform the compiler of the function signature before its actual call site",
+                "To prevent recursion",
+                "To optimize CPU cache lines"
+              ],
+              "correctIndex": 1,
+              "explanation": "Prototypes tell the compiler the function name, parameter types, and return type so it can perform type checking before the full function definition appears."
+            }
+          ]
+        },
+        {
+          "id": "c_l8",
+          "title": "Variable Scope, Lifetime & Storage Classes",
+          "order": 2,
+          "readTimeMinutes": 11,
+          "summary": "Block scope, file scope, the static keyword, extern for cross-file linkage, and variable lifetime.",
+          "content": "### Scope vs Lifetime\n- **Scope**: The region of code where an identifier (variable or function) is visible and accessible.\n- **Lifetime (Storage Duration)**: The period of program execution during which memory is allocated for that variable.\n\n### Storage Classes in C\n1. **`auto`**: Default for local variables inside functions. Allocated on the stack, created on block entry, destroyed on block exit.\n2. **`static` (Inside a Function)**: Preserves variable state between function invocations. Initialized once in the data segment, retained for the entire duration of the program.\n3. **`static` (At File Scope)**: Restricts variable or function visibility strictly to the current translation unit (file), preventing external symbol collision.\n4. **`extern`**: Declares a global variable or function that is defined in another source file, enabling cross-file linkage.\n\n```c\nvoid countVisits() {\n    static int visits = 0; // Initialized once!\n    visits++;\n    printf(\"Visit #%d\\n\", visits);\n}\n```",
+          "code": "#include <stdio.h>\n\nvoid trackEvent() {\n    static int counter = 0;\n    counter = counter + 1;\n    printf(\"Event Count: %d\\n\", counter);\n}\n\nint main() {\n    trackEvent();\n    trackEvent();\n    trackEvent();\n    return 0;\n}",
+          "expectedOutput": "Event Count: 1\nEvent Count: 2\nEvent Count: 3",
+          "practice": {
+            "title": "Maintain Running ID Generator",
+            "instructions": "Demonstrate static variable retention by generating sequential transaction IDs.",
+            "starterCode": "#include <stdio.h>\n\nvoid generateTransactionId() {\n    static int txId = 1000;\n    txId = txId + 1;\n    printf(\"Transaction ID: #%d\\n\", txId);\n}\n\nint main() {\n    generateTransactionId();\n    generateTransactionId();\n    return 0;\n}",
+            "hint": "Declare static int txId = 1000 inside the function.",
+            "solutionCode": "#include <stdio.h>\n\nvoid generateTransactionId() {\n    static int txId = 1000;\n    txId = txId + 1;\n    printf(\"Transaction ID: #%d\\n\", txId);\n}\n\nint main() {\n    generateTransactionId();\n    generateTransactionId();\n    return 0;\n}",
+            "expectedOutput": "Transaction ID: #1001\nTransaction ID: #1002"
+          },
+          "quizzes": [
+            {
+              "id": "c_q8_1",
+              "question": "Where is a local static variable stored in program memory?",
+              "options": [
+                "On the stack inside the current stack frame",
+                "In the data/BSS segment with global lifetime",
+                "On the heap managed by malloc",
+                "Inside CPU registers"
+              ],
+              "correctIndex": 1,
+              "explanation": "Static local variables are allocated in the permanent data/BSS segment, meaning they retain their value across function calls throughout program execution."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c_ch4",
+      "title": "Chapter 4: Arrays & String Processing",
+      "description": "Contiguous memory layout, bounds checking, string termination, and string library functions.",
+      "order": 4,
+      "lessons": [
+        {
+          "id": "c_l9",
+          "title": "Arrays in Memory & Contiguous Storage",
+          "order": 1,
+          "readTimeMinutes": 11,
+          "summary": "Fixed-size homogeneous collections, memory layout, 0-based indexing, and buffer overflow hazards.",
+          "content": "### Array Architecture\nAn array is a collection of elements of identical data type stored in contiguous (unbroken) memory locations.\n```c\nint scores[5] = {90, 85, 78, 92, 88};\n```\nIf `scores` is located at memory address `0x1000` and `sizeof(int) == 4`:\n- `scores[0]` is at `0x1000`\n- `scores[1]` is at `0x1004`\n- `scores[2]` is at `0x1008`\n- General formula: `Address(scores[i]) = BaseAddress + (i * sizeof(type))`\n\n### Zero-Based Indexing\nIn C, indices run from `0` to `size - 1`. C provides **NO automatic bounds checking**. Accessing `scores[5]` in a 5-element array accesses unallocated adjacent memory, causing undefined behavior or segmentation faults.\n\n### Passing Arrays to Functions\nWhen passed to a function, an array decays to a pointer to its first element. The function does NOT know the array size unless passed as a second parameter.",
+          "code": "#include <stdio.h>\n\nint main() {\n    int values[4] = {10, 20, 30, 40};\n    int total = 0;\n    \n    for (int i = 0; i < 4; i++) {\n        total = total + values[i];\n    }\n    \n    printf(\"Array Size: 4 elements\\n\");\n    printf(\"Sum of Elements: %d\\n\", total);\n    return 0;\n}",
+          "expectedOutput": "Array Size: 4 elements\nSum of Elements: 100",
+          "practice": {
+            "title": "Calculate Array Average",
+            "instructions": "Given an array of 3 test scores {80, 90, 100}, compute and print their sum and average.",
+            "starterCode": "#include <stdio.h>\n\nint main() {\n    int scores[3] = {80, 90, 100};\n    int sum = scores[0] + scores[1] + scores[2];\n    int avg = sum / 3;\n    printf(\"Sum: %d\\n\", sum);\n    printf(\"Average: %d\\n\", avg);\n    return 0;\n}",
+            "hint": "Sum the elements and divide by 3.",
+            "solutionCode": "#include <stdio.h>\n\nint scores[3] = {80, 90, 100};\n    int sum = scores[0] + scores[1] + scores[2];\n    int avg = sum / 3;\n    printf(\"Sum: %d\\n\", sum);\n    printf(\"Average: %d\\n\", avg);\n    return 0;\n}",
+            "expectedOutput": "Sum: 270\nAverage: 90"
+          },
+          "quizzes": [
+            {
+              "id": "c_q9_1",
+              "question": "What happens if a C program reads an element beyond the allocated array bound (e.g. arr[10] on a 5-element array)?",
+              "options": [
+                "The runtime throws an ArrayIndexOutOfBoundsException",
+                "The compiler automatically resizes the array",
+                "Undefined behavior: reads whatever arbitrary data sits in that memory address",
+                "The array returns 0"
+              ],
+              "correctIndex": 2,
+              "explanation": "C has no runtime array bounds safety. Accessing past the end reads out-of-bounds memory, leading to corrupted data or a crash."
+            }
+          ]
+        },
+        {
+          "id": "c_l10",
+          "title": "Strings, Null Termination & Standard String Functions",
+          "order": 2,
+          "readTimeMinutes": 12,
+          "summary": "Character arrays, the null byte '\\0', string literals, string length, and safe buffer handling.",
+          "content": "### Strings in C are Arrays of Characters\nC has no built-in `string` object. A string is simply a sequence of characters stored in an array, terminated by a special **null character (`'\\0'`)**, whose ASCII value is `0`.\n```c\nchar greeting[] = \"Hello\";\n// In memory: ['H', 'e', 'l', 'l', 'o', '\\0'] (6 bytes total)\n```\n\n### The Null Terminator is Mandatory\nStandard C functions (`printf(\"%s\")`, `strlen`, `strcpy`) traverse memory byte-by-byte until they encounter `'\\0'`. If the null terminator is missing, functions read continuously into adjacent memory until finding a random zero byte.\n\n### Key String Functions (<string.h>)\n- `strlen(str)`: Returns number of characters up to, but NOT including, `'\\0'`.\n- `strcpy(dest, src)`: Copies source string into destination buffer (dangerous if dest is too small).\n- `strcat(dest, src)`: Appends source string to destination.\n- `strcmp(s1, s2)`: Compares two strings lexicographically; returns 0 if identical.",
+          "code": "#include <stdio.h>\n\nint main() {\n    char greeting[] = \"Welcome to C\";\n    printf(\"String Output: %s\\n\", greeting);\n    printf(\"First Character: %c\\n\", greeting[0]);\n    return 0;\n}",
+          "expectedOutput": "String Output: Welcome to C\nFirst Character: W",
+          "practice": {
+            "title": "Format User Greeting Message",
+            "instructions": "Print a welcome message combining username 'Developer' with system name 'DevLearn'.",
+            "starterCode": "#include <stdio.h>\n\nint main() {\n    char user[] = \"Developer\";\n    char system[] = \"DevLearn\";\n    printf(\"Hello, %s!\\n\", user);\n    printf(\"Welcome to %s platform.\\n\", system);\n    return 0;\n}",
+            "hint": "Use printf with %s format specifier.",
+            "solutionCode": "#include <stdio.h>\n\nint main() {\n    char user[] = \"Developer\";\n    char system[] = \"DevLearn\";\n    printf(\"Hello, %s!\\n\", user);\n    printf(\"Welcome to %s platform.\\n\", system);\n    return 0;\n}",
+            "expectedOutput": "Hello, Developer!\nWelcome to DevLearn platform."
+          },
+          "quizzes": [
+            {
+              "id": "c_q10_1",
+              "question": "How many bytes of memory are required to store the string literal 'Code' in C?",
+              "options": [
+                "4 bytes",
+                "5 bytes",
+                "8 bytes",
+                "Depends on screen resolution"
+              ],
+              "correctIndex": 1,
+              "explanation": "'Code' consists of 4 characters ('C', 'o', 'd', 'e') plus 1 mandatory null terminator byte ('\\0'), totaling 5 bytes."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c_ch5",
+      "title": "Chapter 5: Pointers & Low-Level Memory",
+      "description": "The heart of C: memory addresses, dereferencing, pointer arithmetic, and pass-by-reference.",
+      "order": 5,
+      "lessons": [
+        {
+          "id": "c_l11",
+          "title": "Pointer Architecture, Memory Addresses & Dereferencing",
+          "order": 1,
+          "readTimeMinutes": 14,
+          "summary": "Understand pointers as memory addresses, the address-of operator (&), the dereference operator (*), and pointer types.",
+          "content": "### What is a Pointer?\nA pointer is simply a variable whose value is the **memory address** of another variable. In C, everything exists at a hardware address in RAM.\n\n### The Two Fundamental Operators\n1. **Address-of Operator (`&`)**: Obtains the memory address of a variable.\n2. **Dereference / Indirection Operator (`*`)**: Accesses the value stored at the address pointed to.\n\n```c\nint count = 42;\nint *ptr = &count; // ptr holds address of count\n\nprintf(\"Value of count: %d\\n\", count);   // 42\nprintf(\"Value via ptr: %d\\n\", *ptr);     // 42 (dereferenced)\n\n*ptr = 99; // Directly modifies memory location of count!\nprintf(\"New count value: %d\\n\", count); // 99\n```\n\n### Why Pointers Exist\n- Pointers allow functions to modify caller variables (Pass-by-reference).\n- Pointers enable dynamic memory allocation on the heap.\n- Pointers enable efficient passing of massive data structures without copying memory.\n- Pointers allow building dynamic structures like linked lists, trees, and graphs.\n\n### The Dangers: NULL and Uninitialized Pointers\nA wild pointer points to an arbitrary, unallocated address. Dereferencing a NULL pointer or wild pointer causes a **Segmentation Fault** (OS crashes the process to protect system integrity).",
+          "code": "#include <stdio.h>\n\nint main() {\n    int target = 50;\n    int *ptr = &target;\n    \n    printf(\"Initial Value: %d\\n\", target);\n    \n    *ptr = 100;\n    printf(\"Updated via Pointer: %d\\n\", target);\n    return 0;\n}",
+          "expectedOutput": "Initial Value: 50\nUpdated via Pointer: 100",
+          "practice": {
+            "title": "Modify Variable via Pointer",
+            "instructions": "Declare int score = 75, create pointer int *pScore = &score, and double the score through dereferencing.",
+            "starterCode": "#include <stdio.h>\n\nint main() {\n    int score = 75;\n    int *pScore = &score;\n    *pScore = *pScore * 2;\n    printf(\"Doubled Score: %d\\n\", score);\n    return 0;\n}",
+            "hint": "*pScore = *pScore * 2 updates the underlying variable.",
+            "solutionCode": "#include <stdio.h>\n\nint main() {\n    int score = 75;\n    int *pScore = &score;\n    *pScore = *pScore * 2;\n    printf(\"Doubled Score: %d\\n\", score);\n    return 0;\n}",
+            "expectedOutput": "Doubled Score: 150"
+          },
+          "quizzes": [
+            {
+              "id": "c_q11_1",
+              "question": "If 'int *p = &x;', what does the expression '*p' represent?",
+              "options": [
+                "The memory address of x",
+                "The value stored inside variable x",
+                "The memory address of pointer p",
+                "A new uninitialized pointer"
+              ],
+              "correctIndex": 1,
+              "explanation": "Dereferencing a pointer using '*' navigates to the address stored in the pointer and accesses the actual value stored there."
+            }
+          ]
+        },
+        {
+          "id": "c_l12",
+          "title": "Pass-by-Reference & Pointer Parameters",
+          "order": 2,
+          "readTimeMinutes": 12,
+          "summary": "Overcoming C's pass-by-value limitation using pointers, writing swap functions, and returning multiple results.",
+          "content": "### Emulating Pass-by-Reference\nBecause C strictly evaluates parameters by value, a standard function receives duplicate copies of arguments. To permit a function to modify caller variables, we pass the **addresses** of those variables:\n\n```c\n// Classic Swap Function\nvoid swap(int *a, int *b) {\n    int temp = *a;\n    *a = *b;\n    *b = temp;\n}\n\nint main() {\n    int x = 10, y = 20;\n    swap(&x, &y); // Passes memory addresses!\n    // Now x == 20, y == 10\n}\n```\n\n### Multiple Return Values\nIn C, a function can only have one return type in its signature. To return multiple values from a function, pass pointers to output variables into the parameter list:\n```c\nvoid getMinMax(int a, int b, int *min, int *max) {\n    if (a < b) {\n        *min = a;\n        *max = b;\n    } else {\n        *min = b;\n        *max = a;\n    }\n}\n```",
+          "code": "#include <stdio.h>\n\nvoid swap(int *a, int *b) {\n    int temp = *a;\n    *a = *b;\n    *b = temp;\n}\n\nint main() {\n    int val1 = 10;\n    int val2 = 20;\n    \n    printf(\"Before: val1=%d, val2=%d\\n\", val1, val2);\n    swap(&val1, &val2);\n    printf(\"After: val1=%d, val2=%d\\n\", val1, val2);\n    return 0;\n}",
+          "expectedOutput": "Before: val1=10, val2=20\nAfter: val1=20, val2=10",
+          "practice": {
+            "title": "Increment Counter via Pointer",
+            "instructions": "Write a function `void increment(int *val)` that adds 5 to the referenced integer. Test with an initial value of 15.",
+            "starterCode": "#include <stdio.h>\n\nvoid increment(int *val) {\n    *val = *val + 5;\n}\n\nint main() {\n    int count = 15;\n    increment(&count);\n    printf(\"Updated Count: %d\\n\", count);\n    return 0;\n}",
+            "hint": "Pass &count to the function and use *val = *val + 5.",
+            "solutionCode": "#include <stdio.h>\n\nvoid increment(int *val) {\n    *val = *val + 5;\n}\n\nint main() {\n    int count = 15;\n    increment(&count);\n    printf(\"Updated Count: %d\\n\", count);\n    return 0;\n}",
+            "expectedOutput": "Updated Count: 20"
+          },
+          "quizzes": [
+            {
+              "id": "c_q12_1",
+              "question": "Why must the address operator '&' be used when calling swap(&x, &y)?",
+              "options": [
+                "To allocate memory for x and y",
+                "Because swap expects pointer parameters holding memory addresses",
+                "To prevent compiler optimization",
+                "To convert x and y into float types"
+              ],
+              "correctIndex": 1,
+              "explanation": "The swap function takes 'int *' pointers. Passing '&x' provides the address of x so the function can modify x's original memory directly."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c_ch6",
+      "title": "Chapter 6: Dynamic Memory Allocation",
+      "description": "Heap management with malloc, calloc, realloc, and avoiding memory leaks.",
+      "order": 6,
+      "lessons": [
+        {
+          "id": "c_l13",
+          "title": "Heap Allocation with malloc, calloc & free",
+          "order": 1,
+          "readTimeMinutes": 13,
+          "summary": "Stack vs heap memory, allocating dynamic buffers, checking for NULL allocation failures, and deallocating with free().",
+          "content": "### The Two Program Memories: Stack vs Heap\n1. **Stack Memory**:\n   - Fast, automatic allocation and deallocation upon function scope entry and exit.\n   - Fixed size (typically 1-8 MB). Stack overflow occurs if exceeded.\n2. **Heap Memory**:\n   - Vast pool of system memory managed manually by the programmer.\n   - Dynamic: size can be determined at runtime based on user data.\n   - Requires explicit manual deallocation; otherwise memory leaks occur.\n\n### Dynamic Allocation Functions (<stdlib.h>)\n- **`malloc(size_t size)`**: Allocates `size` uninitialized bytes from heap. Returns a `void*` pointer to the allocated block.\n- **`calloc(size_t num, size_t size)`**: Allocates memory for `num` elements and initializes all bytes to zero (`0`).\n- **`free(void *ptr)`**: Releases the allocated heap block back to the operating system.\n\n### The Golden Rules of Heap Memory\n1. **Always check for NULL**: If the system is out of memory, `malloc` returns `NULL`.\n2. **Every `malloc` must have a matching `free`**.\n3. **Never access memory after calling `free()` (Dangling Pointer)**.",
+          "code": "#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    int *numbers = (int*)malloc(3 * sizeof(int));\n    if (numbers == NULL) {\n        printf(\"Memory allocation failed!\\n\");\n        return 1;\n    }\n    \n    numbers[0] = 100;\n    numbers[1] = 200;\n    numbers[2] = 300;\n    \n    printf(\"Allocated 3 elements on heap\\n\");\n    printf(\"Element 0: %d\\n\", numbers[0]);\n    printf(\"Element 1: %d\\n\", numbers[1]);\n    printf(\"Element 2: %d\\n\", numbers[2]);\n    \n    free(numbers);\n    printf(\"Heap memory freed successfully\\n\");\n    return 0;\n}",
+          "expectedOutput": "Allocated 3 elements on heap\nElement 0: 100\nElement 1: 200\nElement 2: 300\nHeap memory freed successfully",
+          "practice": {
+            "title": "Allocate Dynamic Buffer",
+            "instructions": "Demonstrate allocating a 2-integer heap array, initializing values to 42 and 84, and printing them.",
+            "starterCode": "#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    int *arr = (int*)malloc(2 * sizeof(int));\n    arr[0] = 42;\n    arr[1] = 84;\n    printf(\"Item 1: %d\\n\", arr[0]);\n    printf(\"Item 2: %d\\n\", arr[1]);\n    free(arr);\n    return 0;\n}",
+            "hint": "Allocate with malloc(2 * sizeof(int)), set values, and free.",
+            "solutionCode": "#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    int *arr = (int*)malloc(2 * sizeof(int));\n    arr[0] = 42;\n    arr[1] = 84;\n    printf(\"Item 1: %d\\n\", arr[0]);\n    printf(\"Item 2: %d\\n\", arr[1]);\n    free(arr);\n    return 0;\n}",
+            "expectedOutput": "Item 1: 42\nItem 2: 84"
+          },
+          "quizzes": [
+            {
+              "id": "c_q13_1",
+              "question": "What is a memory leak in a C application?",
+              "options": [
+                "Accessing private operating system kernel variables",
+                "Allocating memory on the heap with malloc but never releasing it with free",
+                "Writing too much data into a char array",
+                "Using static variables inside loops"
+              ],
+              "correctIndex": 1,
+              "explanation": "A memory leak occurs when heap memory is allocated but never deallocated with free(), gradually exhausting system RAM."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c_ch7",
+      "title": "Chapter 7: User-Defined Types & Structures",
+      "description": "Composite types with struct, member access, the arrow operator, typedef, and unions.",
+      "order": 7,
+      "lessons": [
+        {
+          "id": "c_l14",
+          "title": "Structures (struct), Typedef & Pointer Access",
+          "order": 1,
+          "readTimeMinutes": 12,
+          "summary": "Grouping heterogeneous variables into structs, simplifying types with typedef, and using the dot (.) vs arrow (->) operators.",
+          "content": "### Why Structures?\nArrays group variables of identical type. In real systems, entities possess diverse attributes: a `User` has an integer ID, float salary, and character name. A `struct` groups heterogeneous fields under a single composite type:\n\n```c\nstruct Student {\n    int id;\n    float gpa;\n    char rank;\n};\n```\n\n### The `typedef` Keyword\nBy default, declaring a struct requires writing `struct Student s1;`. The `typedef` keyword creates a type alias, enabling clean syntax:\n```c\ntypedef struct {\n    int id;\n    float gpa;\n} Student;\n\nStudent s1 = {101, 3.9};\n```\n\n### Member Access: Dot (`.`) vs Arrow (`->`)\n- **Dot Operator (`.`)**: Used when accessing members of a direct struct instance: `s1.id = 101;`\n- **Arrow Operator (`->`)**: Used when accessing members through a **pointer** to a struct: `ptr->id = 101;` (syntactic sugar for `(*ptr).id`).",
+          "code": "#include <stdio.h>\n\ntypedef struct {\n    int id;\n    int age;\n} Person;\n\nint main() {\n    Person dev = {1042, 28};\n    Person *pDev = &dev;\n    \n    printf(\"Direct Access ID: %d\\n\", dev.id);\n    printf(\"Pointer Access ID: %d\\n\", pDev->id);\n    printf(\"Age: %d\\n\", pDev->age);\n    return 0;\n}",
+          "expectedOutput": "Direct Access ID: 1042\nPointer Access ID: 1042\nAge: 28",
+          "practice": {
+            "title": "Model a 2D Coordinate Point",
+            "instructions": "Define a Point struct with x and y integers. Create a point with x=15, y=30, and print both coordinates.",
+            "starterCode": "#include <stdio.h>\n\ntypedef struct {\n    int x;\n    int y;\n} Point;\n\nint main() {\n    Point pt = {15, 30};\n    printf(\"Point X: %d\\n\", pt.x);\n    printf(\"Point Y: %d\\n\", pt.y);\n    return 0;\n}",
+            "hint": "Use pt.x and pt.y to print coordinates.",
+            "solutionCode": "#include <stdio.h>\n\ntypedef struct {\n    int x;\n    int y;\n} Point;\n\nint main() {\n    Point pt = {15, 30};\n    printf(\"Point X: %d\\n\", pt.x);\n    printf(\"Point Y: %d\\n\", pt.y);\n    return 0;\n}",
+            "expectedOutput": "Point X: 15\nPoint Y: 30"
+          },
+          "quizzes": [
+            {
+              "id": "c_q14_1",
+              "question": "When must the arrow operator (->) be used instead of the dot operator (.)?",
+              "options": [
+                "When accessing variables in another source file",
+                "When accessing struct members through a pointer to that struct",
+                "When defining array elements",
+                "Only when compiling in C99 mode"
+              ],
+              "correctIndex": 1,
+              "explanation": "The arrow operator 'ptr->member' dereferences the struct pointer and accesses the member, equivalent to '(*ptr).member'."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c_ch8",
+      "title": "Chapter 8: File I/O & The C Preprocessor",
+      "description": "Stream-based persistent file operations and preprocessor macro engineering.",
+      "order": 8,
+      "lessons": [
+        {
+          "id": "c_l15",
+          "title": "File I/O Streams & Preprocessor Directives",
+          "order": 1,
+          "readTimeMinutes": 13,
+          "summary": "Master file pointer streams with fopen, fprintf, and fclose, alongside macro expansion and header include guards.",
+          "content": "### Persistent Storage with File Streams\nTo retain program output beyond process termination, C provides file stream abstractions in `<stdio.h>`.\n- `FILE *fp`: An opaque pointer to a system file control block.\n- `fopen(filename, mode)`: Opens a file in read (`\"r\"`), write (`\"w\"`), or append (`\"a\"`) mode.\n- `fclose(fp)`: Flushes buffers and closes the system file descriptor.\n\n### Preprocessor Directives & Include Guards\nThe C preprocessor runs prior to compilation.\n- `#define PI 3.14159`: Defines a textual macro replacement.\n- `#define MAX(a,b) ((a) > (b) ? (a) : (b))`: Inline function-like macro.\n- **Include Guards**: Prevent duplicate header definitions when files include each other:\n```c\n#ifndef MY_HEADER_H\n#define MY_HEADER_H\n\n// Header prototypes and structures\n\n#endif // MY_HEADER_H\n```",
+          "code": "#include <stdio.h>\n\n#define MAX_BUFFER 1024\n#define APP_NAME \"DevLearn C Kernel\"\n\nint main() {\n    printf(\"Application: %s\\n\", APP_NAME);\n    printf(\"Buffer Capacity: %d bytes\\n\", MAX_BUFFER);\n    printf(\"File Stream Architecture: Verified\\n\");\n    return 0;\n}",
+          "expectedOutput": "Application: DevLearn C Kernel\nBuffer Capacity: 1024 bytes\nFile Stream Architecture: Verified",
+          "practice": {
+            "title": "Configure System Macro Settings",
+            "instructions": "Define a macro MAX_CONNECTIONS as 100, and print the active server capacity.",
+            "starterCode": "#include <stdio.h>\n\n#define MAX_CONNECTIONS 100\n\nint main() {\n    printf(\"Server Max Connections: %d\\n\", MAX_CONNECTIONS);\n    return 0;\n}",
+            "hint": "Use #define MAX_CONNECTIONS 100 and print it with %d.",
+            "solutionCode": "#include <stdio.h>\n\n#define MAX_CONNECTIONS 100\n\nint main() {\n    printf(\"Server Max Connections: %d\\n\", MAX_CONNECTIONS);\n    return 0;\n}",
+            "expectedOutput": "Server Max Connections: 100"
+          },
+          "quizzes": [
+            {
+              "id": "c_q15_1",
+              "question": "What is the primary purpose of header include guards (#ifndef / #define / #endif)?",
+              "options": [
+                "To encrypt the source code",
+                "To prevent the same header file from being included multiple times in a single compilation unit",
+                "To increase the maximum file size",
+                "To automatically free malloc memory"
+              ],
+              "correctIndex": 1,
+              "explanation": "Include guards ensure that duplicate inclusions of a header file are ignored by the preprocessor, avoiding redefinition compiler errors."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

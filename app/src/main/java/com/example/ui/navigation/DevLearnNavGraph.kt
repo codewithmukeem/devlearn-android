@@ -128,6 +128,7 @@ fun DevLearnNavGraph(
     // Base route extracted cleanly (ignores query params like ?initialLang=c)
     val currentBaseRoute = currentDestination?.route?.substringBefore("?")?.substringBefore("/")
     val isImeOpen = WindowInsets.isImeVisible
+    val isAITutorScreen = currentBaseRoute == Screen.AITutor.route
 
     // Hide bottom bar on reading/lesson/pdf view or when keyboard is open
     val shouldShowBottomBar = !isImeOpen && currentBaseRoute in listOf(
@@ -189,7 +190,10 @@ fun DevLearnNavGraph(
             startDestination = Screen.Home.route,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(
+                    top = innerPadding.calculateTopPadding(),
+                    bottom = if (isAITutorScreen) 0.dp else innerPadding.calculateBottomPadding()
+                )
         ) {
             // Home Dashboard
             composable(Screen.Home.route) {
@@ -386,7 +390,8 @@ fun DevLearnNavGraph(
                 AITutorScreen(
                     initialCourse = course,
                     initialLesson = lesson,
-                    initialCode = code
+                    initialCode = code,
+                    bottomNavPadding = if (shouldShowBottomBar) innerPadding.calculateBottomPadding() else 0.dp
                 )
             }
 

@@ -18,8 +18,9 @@
 
 ## 📱 Download the Application (APK)
 
-Get the production build directly on your Android device:
+Get the latest production build directly on your Android device:
 
+👉 **[Download DevLearn APK (Latest v1.0.1)](https://github.com/codewithmukeem/devlearn-android/releases/download/v1.0.1/devlearn-v1.0.1.apk)**  
 👉 **[Download DevLearn APK (v1.0.0)](https://github.com/codewithmukeem/devlearn-android/releases/download/v1.0.0/devlearn-v1.0.0.apk)**
 
 1. Download the `.apk` file above to your Android phone or tablet.
